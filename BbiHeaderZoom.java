@@ -14,6 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
+
+/* -------------------------------------------------------------------------- */
+
 class BbiHeaderZoom {
 
     long ReductionLevel;
@@ -23,5 +29,19 @@ class BbiHeaderZoom {
     long NBlocks;
     long PtrDataOffset;
     long PtrIndexOffset;
+
+    public void Read(SeekableByteChannel channel) throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate(32+32+64+64+32+64+64);
+        // determine offset positions
+        PtrDataOffset  = channel.position() + 1*64;
+        PtrIndexOffset = channel.position() + 2*64;
+        // read header
+        channel.read(buffer);
+        ReductionLevel = buffer.getInt () & 0xFFFFFFFFL;
+        Reserved       = buffer.getInt () & 0xFFFFFFFFL;
+        DataOffset     = buffer.getLong() & 0xFFFFFFFFL;
+        IndexOffset    = buffer.getLong() & 0xFFFFFFFFL;
+        NBlocks        = buffer.getInt () & 0xFFFFFFFFL;
+    }
 
 }
