@@ -23,5 +23,5 @@ class BbiFile {
     BData               ChromData;
     RTree               Index;
     RTree[]             IndexZoom;
-    SeekableByteChannel Channel;    
+    SeekableByteChannel Channel;
 }
