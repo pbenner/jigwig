@@ -39,7 +39,7 @@ class BData {
         ByteBuffer bufKey = ByteBuffer.allocate((int)KeySize);
         ByteBuffer bufVal = ByteBuffer.allocate((int)ValueSize);
         channel.read(buffer);
-        int nVals = buffer.getShort() & 0xFFFF;
+        int nVals = unsigned.getShort(buffer);
         for (int i = 0; i < nVals; i++) {
             channel.read(bufKey);
             channel.read(bufVal);
@@ -53,12 +53,12 @@ class BData {
         ByteBuffer bufKey = ByteBuffer.allocate((int)KeySize);
         ByteBuffer bufVal = ByteBuffer.allocate(64);
         channel.read(buffer);
-        int  nVals = buffer.getShort() & 0xFFFF;
+        int  nVals = unsigned.getShort(buffer);
         long position, currentPosition;
        for (int i = 0; i < nVals; i++) {
             channel.read(bufKey);
             channel.read(bufVal);
-            position = bufVal.getLong() & 0xFFFFFFFFL;
+            position = unsigned.getLong(bufVal);
             // save current position and jump to child vertex
             currentPosition = channel.position();
             channel.position(position);
@@ -87,11 +87,11 @@ class BData {
         ByteBuffer buffer = ByteBuffer.allocate(6*32 + 1*64);
         // read header
         channel.read(buffer);
-        Magic         = buffer.getInt () & 0xFFFFFFFFL;
-        ItemsPerBlock = buffer.getInt () & 0xFFFFFFFFL;
-        KeySize       = buffer.getInt () & 0xFFFFFFFFL;
-        ValueSize     = buffer.getInt () & 0xFFFFFFFFL;
-        ItemCount     = buffer.getLong() & 0xFFFFFFFFL;
+        Magic         = unsigned.getInt (buffer);
+        ItemsPerBlock = unsigned.getInt (buffer);
+        KeySize       = unsigned.getInt (buffer);
+        ValueSize     = unsigned.getInt (buffer);
+        ItemCount     = unsigned.getLong(buffer);
         // padding
         buffer.getLong();
         // check magic number

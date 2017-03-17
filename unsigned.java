@@ -16,32 +16,24 @@
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SeekableByteChannel;
 
 /* -------------------------------------------------------------------------- */
 
-class BbiHeaderZoom {
-
-    long ReductionLevel;
-    long Reserved;
-    long DataOffset;
-    long IndexOffset;
-    long NBlocks;
-    long PtrDataOffset;
-    long PtrIndexOffset;
-
-    public void Read(SeekableByteChannel channel) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(32+32+64+64+32+64+64);
-        // determine offset positions
-        PtrDataOffset  = channel.position() + 1*64;
-        PtrIndexOffset = channel.position() + 2*64;
-        // read header
-        channel.read(buffer);
-        ReductionLevel = unsigned.getInt (buffer);
-        Reserved       = unsigned.getInt (buffer);
-        DataOffset     = unsigned.getLong(buffer);
-        IndexOffset    = unsigned.getLong(buffer);
-        NBlocks        = unsigned.getInt (buffer);
+class unsigned {
+    public static short getByte(ByteBuffer buffer) {
+        return ((short)(buffer.get() & 0xff));
     }
-
+    public static int getShort(ByteBuffer buffer) {
+        return (buffer.getShort() & 0xffff);
+    }
+    public static long getInt(ByteBuffer buffer) {
+        return ((long)buffer.getInt() & 0xffffffffL);
+    }
+    public static long getLong(ByteBuffer buffer) throws IOException {
+        long r = buffer.getLong();
+        if (r < 0) {
+            throw new IOException("integer overflow");
+        }
+        return r;
+    }
 }

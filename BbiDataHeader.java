@@ -34,14 +34,14 @@ class BbiDataHeader {
 
     void read(ByteBuffer buffer) {
 
-        ChromId   = buffer.getInt() & 0xFFFFFFFFL;
-        Start     = buffer.getInt() & 0xFFFFFFFFL;
-        End       = buffer.getInt() & 0xFFFFFFFFL;
-        Step      = buffer.getInt() & 0xFFFFFFFFL;
-        Span      = buffer.getInt() & 0xFFFFFFFFL;
+        ChromId   = unsigned.getInt(buffer);
+        Start     = unsigned.getInt(buffer);
+        End       = unsigned.getInt(buffer);
+        Step      = unsigned.getInt(buffer);
+        Span      = unsigned.getInt(buffer);
         Type      = buffer.get();
         Reserved  = buffer.get();
-        ItemCount = buffer.getShort() & 0xFFFF;
+        ItemCount = unsigned.getShort(buffer);
 
       }
 

@@ -14,6 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
+
+/* -------------------------------------------------------------------------- */
+
 class BbiHeader {
 
     long Magic;
@@ -35,7 +41,7 @@ class BbiHeader {
     long SumSquared;
     BbiHeaderZoom[] ZoomHeaders;
     long NBlocks;
-  // offset positions
+    // offset positions
     long PtrCtOffset;
     long PtrDataOffset;
     long PtrIndexOffset;
@@ -43,5 +49,12 @@ class BbiHeader {
     long PtrSummaryOffset;
     long PtrUncompressBufSize;
     long PtrExtensionOffset;
+
+    public void Read(SeekableByteChannel channel) throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate(4*16 + 2*32 + 11*64);
+
+        Magic   = unsigned.getInt  (buffer);
+        Version = unsigned.getShort(buffer);
+    }
 
 }

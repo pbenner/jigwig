@@ -29,10 +29,10 @@ class BbiZoomRecord {
     double SumSquares;
 
     public void Read(ByteBuffer buffer) {
-        ChromId    = buffer.getInt() & 0xFFFFFFFFL;
-        Start      = buffer.getInt() & 0xFFFFFFFFL;
-        End        = buffer.getInt() & 0xFFFFFFFFL;
-        Valid      = buffer.getInt() & 0xFFFFFFFFL;
+        ChromId    = unsigned.getInt(buffer);
+        Start      = unsigned.getInt(buffer);
+        End        = unsigned.getInt(buffer);
+        Valid      = unsigned.getInt(buffer);
         Min        = buffer.getFloat();
         Max        = buffer.getFloat();
         Sum        = buffer.getFloat();

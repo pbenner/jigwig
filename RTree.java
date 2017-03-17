@@ -45,15 +45,15 @@ class RTree {
         // read header
         channel.read(buffer);
 
-        Magic         = buffer.getInt () & 0xFFFFFFFFL;
-        BlockSize     = buffer.getInt () & 0xFFFFFFFFL;
-        NItems        = buffer.getLong() & 0xFFFFFFFFL;
-        ChrIdxStart   = buffer.getInt () & 0xFFFFFFFFL;
-        BaseStart     = buffer.getInt () & 0xFFFFFFFFL;
-        ChrIdxEnd     = buffer.getInt () & 0xFFFFFFFFL;
-        BaseEnd       = buffer.getInt () & 0xFFFFFFFFL;
-        IdxSize       = buffer.getLong() & 0xFFFFFFFFL;
-        NItemsPerSlot = buffer.getInt () & 0xFFFFFFFFL;
+        Magic         = unsigned.getInt (buffer);
+        BlockSize     = unsigned.getInt (buffer);
+        NItems        = unsigned.getLong(buffer);
+        ChrIdxStart   = unsigned.getInt (buffer);
+        BaseStart     = unsigned.getInt (buffer);
+        ChrIdxEnd     = unsigned.getInt (buffer);
+        BaseEnd       = unsigned.getInt (buffer);
+        IdxSize       = unsigned.getLong(buffer);
+        NItemsPerSlot = unsigned.getInt (buffer);
         // padding
         buffer.getInt();
         // check magic number
