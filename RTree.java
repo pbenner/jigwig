@@ -56,6 +56,10 @@ class RTree {
         NItemsPerSlot = buffer.getInt () & 0xFFFFFFFFL;
         // padding
         buffer.getInt();
+        // check magic number
+        if (Magic != MAGIC) {
+            throw new IOException("RTree has invalid magic numner");
+        }
         // parse tree
         Root = new RVertex();
         Root.Read(channel);
