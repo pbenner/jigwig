@@ -55,7 +55,7 @@ class BData {
         channel.read(buffer);
         int  nVals = buffer.getShort() & 0xFFFF;
         long position, currentPosition;
-        for (int i = 0; i < nVals; i++) {
+       for (int i = 0; i < nVals; i++) {
             channel.read(bufKey);
             channel.read(bufVal);
             position = bufVal.getLong() & 0xFFFFFFFFL;
@@ -71,7 +71,7 @@ class BData {
     void readVertex(SeekableByteChannel channel) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(2*32);
         channel.read(buffer);
-        int isLeaf = buffer.get() & 0xFF;
+        byte isLeaf = buffer.get();
         // padding
         buffer.get();
         if (isLeaf != 0) {
