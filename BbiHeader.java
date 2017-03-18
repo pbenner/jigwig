@@ -82,15 +82,18 @@ class BbiHeader {
             ZoomHeaders[i] = new BbiHeaderZoom();
             ZoomHeaders[i].Read(channel);
         }
-        buffer = ByteBuffer.allocate(4*16/8 + 2*32/8 + 6*64/8);
-        channel.read(buffer);
-        buffer.rewind();
 
-        NBasesCovered     = unsigned.getLong (buffer);
-        MinVal            = unsigned.getLong (buffer);
-        MaxVal            = unsigned.getLong (buffer);
-        SumData           = unsigned.getLong (buffer);
-        SumSquared        = unsigned.getLong (buffer);
+        if (SummaryOffset > 0) {
+            buffer = ByteBuffer.allocate(4*16/8 + 2*32/8 + 6*64/8);
+            channel.position(SummaryOffset);
+            channel.read(buffer);
+            buffer.rewind();
+            NBasesCovered     = unsigned.getLong(buffer);
+            MinVal            = unsigned.getLong(buffer);
+            MaxVal            = unsigned.getLong(buffer);
+            SumData           = unsigned.getLong(buffer);
+            SumSquared        = unsigned.getLong(buffer);
+        }
     }
 
 }
