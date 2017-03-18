@@ -41,9 +41,10 @@ class RTree {
     }
 
     void Read(SeekableByteChannel channel) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(8*32 + 2*64);
+        ByteBuffer buffer = ByteBuffer.allocate(8*32/8 + 2*64/8);
         // read header
         channel.read(buffer);
+        buffer.rewind();
 
         Magic         = unsigned.getInt (buffer);
         BlockSize     = unsigned.getInt (buffer);

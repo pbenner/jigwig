@@ -31,10 +31,10 @@ class BbiHeaderZoom {
     long PtrIndexOffset;
 
     public void Read(SeekableByteChannel channel) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(32+32+64+64+32+64+64);
+        ByteBuffer buffer = ByteBuffer.allocate(3*32/8 + 4*64/8);
         // determine offset positions
-        PtrDataOffset  = channel.position() + 1*64;
-        PtrIndexOffset = channel.position() + 2*64;
+        PtrDataOffset  = channel.position() + 1*64/8;
+        PtrIndexOffset = channel.position() + 2*64/8;
         // read header
         channel.read(buffer);
         ReductionLevel = unsigned.getInt (buffer);

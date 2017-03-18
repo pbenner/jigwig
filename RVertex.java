@@ -37,14 +37,15 @@ class RVertex {
 
     void Read(SeekableByteChannel channel) throws IOException {
 
-        ByteBuffer buffer = ByteBuffer.allocate(2*8 + 1*16);
+        ByteBuffer buffer = ByteBuffer.allocate(2*8/8 + 1*16/8);
         // read header
         channel.read(buffer);
+        buffer.rewind();
 
         IsLeaf = buffer.get();
         // padding
         buffer.get();
-        NChildren = unsigned.getInt(buffer);
+        NChildren = unsigned.getShort(buffer);
         // allocate memory
         ChrIdxStart   = new long[NChildren];
         BaseStart     = new long[NChildren];
@@ -56,19 +57,20 @@ class RVertex {
             Sizes    = new long[NChildren];
             PtrSizes = new long[NChildren];
             // get new buffer
-            buffer = ByteBuffer.allocate(4*32 + 2*64);
+            buffer = ByteBuffer.allocate(4*32/8 + 2*64/8);
         }
         else {
             Children = new RVertex[NChildren];
             // get new buffer
-            buffer = ByteBuffer.allocate(4*32 + 1*64);
+            buffer = ByteBuffer.allocate(4*32/8 + 1*64/8);
         }
         for (int i = 0; i < NChildren; i++) {
-            PtrDataOffset[i] = channel.position() + 4*32;
+            PtrDataOffset[i] = channel.position() + 4*32/8;
             if (IsLeaf != 0) {
-                PtrSizes[i]  = channel.position() + 4*32 + 64;
+                PtrSizes[i]  = channel.position() + 4*32/8 + 64/8;
             }
-            channel.read(buffer);
+            buffer.rewind(); channel.read(buffer);
+            buffer.rewind();
             ChrIdxStart[i] = unsigned.getInt (buffer);
             BaseStart  [i] = unsigned.getInt (buffer);
             ChrIdxEnd  [i] = unsigned.getInt (buffer);

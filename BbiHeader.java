@@ -28,7 +28,7 @@ class BbiHeader {
     long CtOffset;
     long DataOffset;
     long IndexOffset;
-    int  FieldCould;
+    int  FieldCount;
     int  DefinedFieldCount;
     long SqlOffset;
     long SummaryOffset;
@@ -51,10 +51,46 @@ class BbiHeader {
     long PtrExtensionOffset;
 
     public void Read(SeekableByteChannel channel) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(4*16 + 2*32 + 11*64);
+        // set pointers first
+        PtrCtOffset          = channel.position() + 1*64/8;
+        PtrDataOffset        = channel.position() + 2*64/8;
+        PtrIndexOffset       = channel.position() + 3*64/8;
+        PtrSqlOffset         = channel.position() + 4*64/8 + 2*16/8;
+        PtrSummaryOffset     = channel.position() + 5*64/8 + 2*16/8;
+        PtrUncompressBufSize = channel.position() + 6*64/8 + 2*16/8;
+        PtrExtensionOffset   = channel.position() + 6*64/8 + 4*16/8;
 
-        Magic   = unsigned.getInt  (buffer);
-        Version = unsigned.getShort(buffer);
+        ByteBuffer buffer = ByteBuffer.allocate(4*16/8 + 2*32/8 + 6*64/8);
+        channel.read(buffer);
+        buffer.rewind();
+
+        Magic             = unsigned.getInt  (buffer);
+        Version           = unsigned.getShort(buffer);
+        ZoomLevels        = unsigned.getShort(buffer);
+        CtOffset          = unsigned.getLong (buffer);
+        DataOffset        = unsigned.getLong (buffer);
+        IndexOffset       = unsigned.getLong (buffer);
+        FieldCount        = unsigned.getShort(buffer);
+        DefinedFieldCount = unsigned.getShort(buffer);
+        SqlOffset         = unsigned.getLong (buffer);
+        SummaryOffset     = unsigned.getLong (buffer);
+        UncompressBufSize = unsigned.getInt  (buffer);
+        ExtensionOffset   = unsigned.getLong (buffer);
+
+        ZoomHeaders = new BbiHeaderZoom[ZoomLevels];
+        for (int i = 0; i < ZoomLevels; i++) {
+            ZoomHeaders[i] = new BbiHeaderZoom();
+            ZoomHeaders[i].Read(channel);
+        }
+        buffer = ByteBuffer.allocate(4*16/8 + 2*32/8 + 6*64/8);
+        channel.read(buffer);
+        buffer.rewind();
+
+        NBasesCovered     = unsigned.getLong (buffer);
+        MinVal            = unsigned.getLong (buffer);
+        MaxVal            = unsigned.getLong (buffer);
+        SumData           = unsigned.getLong (buffer);
+        SumSquared        = unsigned.getLong (buffer);
     }
 
 }

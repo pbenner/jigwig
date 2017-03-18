@@ -35,29 +35,29 @@ class BData {
     ArrayList<byte[]> Values;
 
     void readVertexLeaf(SeekableByteChannel channel) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(16);
+        ByteBuffer buffer = ByteBuffer.allocate(16/8);
         ByteBuffer bufKey = ByteBuffer.allocate((int)KeySize);
         ByteBuffer bufVal = ByteBuffer.allocate((int)ValueSize);
-        channel.read(buffer);
+        channel.read(buffer); buffer.rewind();
         int nVals = unsigned.getShort(buffer);
         for (int i = 0; i < nVals; i++) {
-            channel.read(bufKey);
-            channel.read(bufVal);
+            bufKey.rewind(); channel.read(bufKey); bufKey.rewind();
+            bufKey.rewind(); channel.read(bufVal); bufKey.rewind();
             Keys  .add(bufKey.array().clone());
             Values.add(bufKey.array().clone());
         }
     }
 
     void readVertexIndex(SeekableByteChannel channel) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(16);
+        ByteBuffer buffer = ByteBuffer.allocate(16/8);
         ByteBuffer bufKey = ByteBuffer.allocate((int)KeySize);
-        ByteBuffer bufVal = ByteBuffer.allocate(64);
-        channel.read(buffer);
+        ByteBuffer bufVal = ByteBuffer.allocate(64/8);
+        channel.read(buffer); buffer.rewind();
         int  nVals = unsigned.getShort(buffer);
         long position, currentPosition;
-       for (int i = 0; i < nVals; i++) {
-            channel.read(bufKey);
-            channel.read(bufVal);
+        for (int i = 0; i < nVals; i++) {
+            bufKey.rewind(); channel.read(bufKey); bufKey.rewind();
+            bufKey.rewind(); channel.read(bufVal); bufKey.rewind();
             position = unsigned.getLong(bufVal);
             // save current position and jump to child vertex
             currentPosition = channel.position();
@@ -69,8 +69,8 @@ class BData {
     }
 
     void readVertex(SeekableByteChannel channel) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(2*32);
-        channel.read(buffer);
+        ByteBuffer buffer = ByteBuffer.allocate(2*32/8);
+        channel.read(buffer); buffer.rewind();
         byte isLeaf = buffer.get();
         // padding
         buffer.get();
@@ -84,7 +84,7 @@ class BData {
 
     void Read(SeekableByteChannel channel) throws IOException {
 
-        ByteBuffer buffer = ByteBuffer.allocate(6*32 + 1*64);
+        ByteBuffer buffer = ByteBuffer.allocate(6*32/8 + 1*64/8);
         // read header
         channel.read(buffer);
         Magic         = unsigned.getInt (buffer);
