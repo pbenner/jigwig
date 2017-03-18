@@ -50,7 +50,7 @@ class BbiHeader {
     long PtrUncompressBufSize;
     long PtrExtensionOffset;
 
-    public void Read(SeekableByteChannel channel) throws IOException {
+    void Read(SeekableByteChannel channel) throws IOException {
         // set pointers first
         PtrCtOffset          = channel.position() + 1*64/8;
         PtrDataOffset        = channel.position() + 2*64/8;

@@ -28,7 +28,7 @@ class BbiZoomRecord {
     double Sum;
     double SumSquares;
 
-    public void Read(ByteBuffer buffer) {
+    void Read(ByteBuffer buffer) {
         ChromId    = unsigned.getInt(buffer);
         Start      = unsigned.getInt(buffer);
         End        = unsigned.getInt(buffer);
@@ -38,7 +38,7 @@ class BbiZoomRecord {
         Sum        = buffer.getFloat();
         SumSquares = buffer.getFloat();
     }
-    public void AddValue(double x) {
+    void AddValue(double x) {
         if (Min > x) {
             Min = x;
         }

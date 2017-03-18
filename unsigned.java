@@ -20,16 +20,16 @@ import java.nio.ByteBuffer;
 /* -------------------------------------------------------------------------- */
 
 class unsigned {
-    public static short getByte(ByteBuffer buffer) {
+    static short getByte(ByteBuffer buffer) {
         return ((short)(buffer.get() & 0xff));
     }
-    public static int getShort(ByteBuffer buffer) {
+    static int getShort(ByteBuffer buffer) {
         return (buffer.getShort() & 0xffff);
     }
-    public static long getInt(ByteBuffer buffer) {
+    static long getInt(ByteBuffer buffer) {
         return ((long)buffer.getInt() & 0xffffffffL);
     }
-    public static long getLong(ByteBuffer buffer) throws IOException {
+    static long getLong(ByteBuffer buffer) throws IOException {
         long r = buffer.getLong();
         if (r < 0) {
             throw new IOException("integer overflow");

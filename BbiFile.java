@@ -19,9 +19,8 @@ import java.nio.channels.SeekableByteChannel;
 /* -------------------------------------------------------------------------- */
 
 class BbiFile {
-    BbiHeader           Header;
-    BData               ChromData;
-    RTree               Index;
-    RTree[]             IndexZoom;
-    SeekableByteChannel Channel;
+    BbiHeader Header;
+    BData     ChromData;
+    RTree     Index;
+    RTree[]   IndexZoom;
 }
