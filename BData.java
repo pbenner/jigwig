@@ -16,6 +16,7 @@
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.channels.SeekableByteChannel;
 
 import java.util.ArrayList;
@@ -34,10 +35,13 @@ class BData {
     ArrayList<byte[]> Keys;
     ArrayList<byte[]> Values;
 
-    void readVertexLeaf(SeekableByteChannel channel) throws IOException {
+    void readVertexLeaf(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(16/8);
         ByteBuffer bufKey = ByteBuffer.allocate((int)KeySize);
         ByteBuffer bufVal = ByteBuffer.allocate((int)ValueSize);
+        buffer.order(byteOrder);
+        bufKey.order(byteOrder);
+        bufVal.order(byteOrder);
         channel.read(buffer); buffer.rewind();
         int nVals = unsigned.getShort(buffer);
         for (int i = 0; i < nVals; i++) {
@@ -48,10 +52,13 @@ class BData {
         }
     }
 
-    void readVertexIndex(SeekableByteChannel channel) throws IOException {
+    void readVertexIndex(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(16/8);
         ByteBuffer bufKey = ByteBuffer.allocate((int)KeySize);
         ByteBuffer bufVal = ByteBuffer.allocate(64/8);
+        buffer.order(byteOrder);
+        bufKey.order(byteOrder);
+        bufVal.order(byteOrder);
         channel.read(buffer); buffer.rewind();
         int  nVals = unsigned.getShort(buffer);
         long position, currentPosition;
@@ -62,29 +69,31 @@ class BData {
             // save current position and jump to child vertex
             currentPosition = channel.position();
             channel.position(position);
-            readVertex(channel);
+            readVertex(channel, byteOrder);
             // continue with current vertex
             channel.position(currentPosition);
         }
     }
 
-    void readVertex(SeekableByteChannel channel) throws IOException {
+    void readVertex(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(2*32/8);
+        buffer.order(byteOrder);
         channel.read(buffer); buffer.rewind();
         byte isLeaf = buffer.get();
         // padding
         buffer.get();
         if (isLeaf != 0) {
-            readVertexLeaf(channel);
+            readVertexLeaf(channel, byteOrder);
         }
         else {
-            readVertexIndex(channel);
+            readVertexIndex(channel, byteOrder);
         }
     }
 
-    void Read(SeekableByteChannel channel) throws IOException {
+    void Read(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
 
         ByteBuffer buffer = ByteBuffer.allocate(6*32/8 + 1*64/8);
+        buffer.order(byteOrder);
         // read header
         channel.read(buffer);
         Magic         = unsigned.getInt (buffer);
@@ -101,7 +110,7 @@ class BData {
         Keys   = new ArrayList<byte[]>();
         Values = new ArrayList<byte[]>();
         // start traversing the tree
-        readVertex(channel);
+        readVertex(channel, byteOrder);
     }
 
 }

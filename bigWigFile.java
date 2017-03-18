@@ -27,27 +27,23 @@ public class bigWigFile extends BbiFile {
     SeekableByteChannel Channel;
 
     bigWigFile(SeekableByteChannel channel) throws IOException {
-        Header    = new BbiHeader();
+        Header = new BbiHeader();
         // parse header
-        Header.Read(channel);
-        // check magic number
-        if (Header.Magic != MAGIC) {
-            throw new IOException("invalid bigWig file");
-        }
+        Header.Read(channel, MAGIC);
         ChromData = new BData();
         Index     = new RTree();
         IndexZoom = new RTree[Header.ZoomLevels];
         // parse chromosome data
         channel.position(Header.CtOffset);
-        ChromData.Read(channel);
+        ChromData.Read(channel, Header.byteOrder);
         // parse index tree (raw data)
         channel.position(Header.IndexOffset);
-        Index.Read(channel);
+        Index.Read(channel, Header.byteOrder);
         // parse zoom level indices
         for (int i = 0; i < Header.ZoomLevels; i++) {
             channel.position(Header.ZoomHeaders[i].IndexOffset);
             IndexZoom[i] = new RTree();
-            IndexZoom[i].Read(channel);
+            IndexZoom[i].Read(channel, Header.byteOrder);
         }
     }
 }

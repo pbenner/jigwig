@@ -16,6 +16,7 @@
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.channels.SeekableByteChannel;
 
 /* -------------------------------------------------------------------------- */
@@ -40,8 +41,9 @@ class RTree {
         NItemsPerSlot = 1024;
     }
 
-    void Read(SeekableByteChannel channel) throws IOException {
+    void Read(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(8*32/8 + 2*64/8);
+        buffer.order(byteOrder);
         // read header
         channel.read(buffer);
         buffer.rewind();
@@ -63,6 +65,6 @@ class RTree {
         }
         // parse tree
         Root = new RVertex();
-        Root.Read(channel);
+        Root.Read(channel, byteOrder);
     }
 }

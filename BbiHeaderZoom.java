@@ -16,6 +16,7 @@
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.channels.SeekableByteChannel;
 
 /* -------------------------------------------------------------------------- */
@@ -30,8 +31,9 @@ class BbiHeaderZoom {
     long PtrDataOffset;
     long PtrIndexOffset;
 
-    void Read(SeekableByteChannel channel) throws IOException {
+    void Read(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(3*32/8 + 4*64/8);
+        buffer.order(byteOrder);
         // determine offset positions
         PtrDataOffset  = channel.position() + 1*64/8;
         PtrIndexOffset = channel.position() + 2*64/8;

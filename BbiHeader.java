@@ -16,6 +16,7 @@
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.channels.SeekableByteChannel;
 
 /* -------------------------------------------------------------------------- */
@@ -50,17 +51,36 @@ class BbiHeader {
     long PtrUncompressBufSize;
     long PtrExtensionOffset;
 
-    void Read(SeekableByteChannel channel) throws IOException {
-        // set pointers first
-        PtrCtOffset          = channel.position() + 1*64/8;
-        PtrDataOffset        = channel.position() + 2*64/8;
-        PtrIndexOffset       = channel.position() + 3*64/8;
-        PtrSqlOffset         = channel.position() + 4*64/8 + 2*16/8;
-        PtrSummaryOffset     = channel.position() + 5*64/8 + 2*16/8;
-        PtrUncompressBufSize = channel.position() + 6*64/8 + 2*16/8;
-        PtrExtensionOffset   = channel.position() + 6*64/8 + 4*16/8;
+    ByteOrder byteOrder;
 
-        ByteBuffer buffer = ByteBuffer.allocate(4*16/8 + 2*32/8 + 6*64/8);
+    boolean readMagic(SeekableByteChannel channel, int magic, ByteOrder byteOrder) throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate(32/8);
+        buffer.order(byteOrder);
+        channel.read(buffer);
+        buffer.rewind();
+        Magic = unsigned.getInt(buffer);
+        return Magic == magic;
+    }
+
+    void Read(SeekableByteChannel channel, int magic) throws IOException {
+        long position = channel.position();
+
+        // check magic number and determine byte order,
+        // test little endian first
+        if (readMagic(channel, magic, ByteOrder.LITTLE_ENDIAN)) {
+            byteOrder = ByteOrder.LITTLE_ENDIAN;
+        } else {
+            // try again with big endian
+            channel.position(position);
+            if (readMagic(channel, magic, ByteOrder.BIG_ENDIAN)) {
+                byteOrder = ByteOrder.BIG_ENDIAN;
+            } else {
+                throw new IOException("invalid magic number");
+            }
+        }
+        // read header
+        ByteBuffer buffer = ByteBuffer.allocate(4*16/8 + 1*32/8 + 6*64/8);
+        buffer.order(byteOrder);
         channel.read(buffer);
         buffer.rewind();
 
@@ -80,11 +100,11 @@ class BbiHeader {
         ZoomHeaders = new BbiHeaderZoom[ZoomLevels];
         for (int i = 0; i < ZoomLevels; i++) {
             ZoomHeaders[i] = new BbiHeaderZoom();
-            ZoomHeaders[i].Read(channel);
+            ZoomHeaders[i].Read(channel, byteOrder);
         }
-
         if (SummaryOffset > 0) {
             buffer = ByteBuffer.allocate(4*16/8 + 2*32/8 + 6*64/8);
+            buffer.order(byteOrder);
             channel.position(SummaryOffset);
             channel.read(buffer);
             buffer.rewind();
@@ -94,6 +114,14 @@ class BbiHeader {
             SumData           = unsigned.getLong(buffer);
             SumSquared        = unsigned.getLong(buffer);
         }
+        // set pointers
+        PtrCtOffset          = position + 1*64/8;
+        PtrDataOffset        = position + 2*64/8;
+        PtrIndexOffset       = position + 3*64/8;
+        PtrSqlOffset         = position + 4*64/8 + 2*16/8;
+        PtrSummaryOffset     = position + 5*64/8 + 2*16/8;
+        PtrUncompressBufSize = position + 6*64/8 + 2*16/8;
+        PtrExtensionOffset   = position + 6*64/8 + 4*16/8;
     }
 
 }

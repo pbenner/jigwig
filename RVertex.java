@@ -16,6 +16,7 @@
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.channels.SeekableByteChannel;
 
 /* -------------------------------------------------------------------------- */
@@ -35,9 +36,10 @@ class RVertex {
 
     RVertex[] Children;
 
-    void Read(SeekableByteChannel channel) throws IOException {
+    void Read(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
 
         ByteBuffer buffer = ByteBuffer.allocate(2*8/8 + 1*16/8);
+        buffer.order(byteOrder);
         // read header
         channel.read(buffer);
         buffer.rewind();
@@ -58,11 +60,13 @@ class RVertex {
             PtrSizes = new long[NChildren];
             // get new buffer
             buffer = ByteBuffer.allocate(4*32/8 + 2*64/8);
+            buffer.order(byteOrder);
         }
         else {
             Children = new RVertex[NChildren];
             // get new buffer
             buffer = ByteBuffer.allocate(4*32/8 + 1*64/8);
+            buffer.order(byteOrder);
         }
         for (int i = 0; i < NChildren; i++) {
             PtrDataOffset[i] = channel.position() + 4*32/8;
@@ -84,7 +88,7 @@ class RVertex {
             for (int i = 0; i < NChildren; i++) {
                 channel.position(DataOffset[i]);
                 Children[i] = new RVertex();
-                Children[i].Read(channel);
+                Children[i].Read(channel, byteOrder);
             }
         }
     }
