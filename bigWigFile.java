@@ -26,7 +26,7 @@ public class bigWigFile extends BbiFile {
 
     SeekableByteChannel Channel;
 
-    bigWigFile(SeekableByteChannel channel) throws IOException {
+    public bigWigFile(SeekableByteChannel channel) throws IOException {
         Header = new BbiHeader();
         // parse header
         Header.Read(channel, MAGIC);

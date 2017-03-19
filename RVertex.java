@@ -19,6 +19,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SeekableByteChannel;
 
+import java.util.zip.Inflater;
+import java.util.zip.DataFormatException;
+
 /* -------------------------------------------------------------------------- */
 
 class RVertex {
@@ -35,6 +38,29 @@ class RVertex {
     long[] PtrSizes;
 
     RVertex[] Children;
+
+    ByteBuffer ReadBlock(SeekableByteChannel channel, int i, byte[] uncompressBuf) throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate((int)Sizes[i]);
+        if (channel.read(buffer) != Sizes[i]) {
+            throw new IOException("unexpected end of file");
+        }
+        if (uncompressBuf.length > 0) {
+            try {
+                int length;
+                Inflater decompresser = new Inflater();
+                decompresser.setInput(buffer.array(), 0, (int)Sizes[i]);
+                length = decompresser.inflate(uncompressBuf);
+                decompresser.end();
+                return ByteBuffer.wrap(uncompressBuf, 0, length);
+            }
+            catch (DataFormatException e) {
+                throw new IOException("block uncompression failed");
+            }
+        } else {
+            buffer.rewind();
+            return buffer;
+        }
+    }
 
     void Read(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
 
