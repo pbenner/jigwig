@@ -147,7 +147,8 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
                 result_next.To = record.To;
                 // stop if current result record is full
                 if (result_next.To - result_next.From >= binsize) {
-                    break;
+                    decoderIterator.Next();
+                    return result;
                 }
             }
         }
