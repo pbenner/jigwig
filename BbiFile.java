@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 
 /* -------------------------------------------------------------------------- */
@@ -26,7 +27,29 @@ class BbiFile {
 
     SeekableByteChannel Channel;
 
-    BbiFileIterator Query(int idx, int from, int to, int binsize) {
+    BbiFile(SeekableByteChannel channel, long magic) throws IOException {
+        Header = new BbiHeader();
+        // parse header
+        Header.Read(channel, magic);
+        ChromData = new BData();
+        Index     = new RTree();
+        IndexZoom = new RTree[Header.ZoomLevels];
+        // parse chromosome data
+        channel.position(Header.CtOffset);
+        ChromData.Read(channel, Header.byteOrder);
+        // parse index tree (raw data)
+        channel.position(Header.IndexOffset);
+        Index.Read(channel, Header.byteOrder);
+        // parse zoom level indices
+        for (int i = 0; i < Header.ZoomLevels; i++) {
+            channel.position(Header.ZoomHeaders[i].IndexOffset);
+            IndexZoom[i] = new RTree();
+            IndexZoom[i].Read(channel, Header.byteOrder);
+        }
+        Channel = channel;
+    }
+
+    BbiFileIterator Query(int idx, int from, int to, int binsize) throws IOException {
         return new BbiFileIterator(this, idx, from, to, binsize);
     }
 }

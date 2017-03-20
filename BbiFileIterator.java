@@ -41,7 +41,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
 
     byte[] uncompressBuf;
 
-    BbiFileIterator(BbiFile file, int idx, int from, int to, int binsize) {
+    BbiFileIterator(BbiFile file, int idx, int from, int to, int binsize) throws IOException {
         if (binsize != 0) {
             from = divInt.Down(from, binsize)*binsize;
             to   = divInt.Up  (to,   binsize)*binsize;
@@ -71,7 +71,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
         result      = new BbiSummaryRecord();
         result_next = new BbiSummaryRecord();
         // initialize result_next
-        next();
+        next_();
     }
 
     public boolean hasNext() {
@@ -88,6 +88,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
         }
         catch (IOException e) {
             result_next = null;
+            System.out.println(e);
             return new BbiFileIteratorType(e);
         }
     }
@@ -109,9 +110,11 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
         while (true) {
             // check if we need to get a new block
             if (decoderIterator == null || !decoderIterator.Ok()) {
-                traverser.Next();
                 if (traverser.Ok()) {
                     RTreeTraverserType r = traverser.Get();
+                    // set channel position to data block offset
+                    file.Channel.position(r.Vertex.DataOffset[r.Idx]);
+                    // read block
                     ByteBuffer buffer = r.Vertex.ReadBlock(file.Channel, r.Idx, uncompressBuf);
                     buffer.order(file.Header.byteOrder);
                     if (dataIsRaw) {
@@ -121,11 +124,13 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
                         BbiZoomBlockDecoder decoder = new BbiZoomBlockDecoder(buffer);
                         decoderIterator = decoder.Decode();
                     }
+                    traverser.Next();
                 } else {
                     // no new block found, done
                     break;
                 }
             }
+            System.out.println("parsing block");
             // loop over block
             for (record = decoderIterator.Get(); decoderIterator.Ok(); decoderIterator.Next()) {
                 if (record.From < from || record.To > to) {

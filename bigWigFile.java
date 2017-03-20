@@ -27,24 +27,7 @@ public class bigWigFile extends BbiFile {
     Genome genome;
 
     public bigWigFile(SeekableByteChannel channel) throws IOException {
-        Header = new BbiHeader();
-        // parse header
-        Header.Read(channel, MAGIC);
-        ChromData = new BData();
-        Index     = new RTree();
-        IndexZoom = new RTree[Header.ZoomLevels];
-        // parse chromosome data
-        channel.position(Header.CtOffset);
-        ChromData.Read(channel, Header.byteOrder);
-        // parse index tree (raw data)
-        channel.position(Header.IndexOffset);
-        Index.Read(channel, Header.byteOrder);
-        // parse zoom level indices
-        for (int i = 0; i < Header.ZoomLevels; i++) {
-            channel.position(Header.ZoomHeaders[i].IndexOffset);
-            IndexZoom[i] = new RTree();
-            IndexZoom[i].Read(channel, Header.byteOrder);
-        }
+        super(channel, MAGIC);
         // convert BData to Genome
         int n = ChromData.Keys.size();
         String[] seqnames  = new String[n];
