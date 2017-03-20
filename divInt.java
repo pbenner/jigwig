@@ -14,19 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.nio.channels.SeekableByteChannel;
+class divInt {
 
-/* -------------------------------------------------------------------------- */
-
-class BbiFile {
-    BbiHeader Header;
-    BData     ChromData;
-    RTree     Index;
-    RTree[]   IndexZoom;
-
-    SeekableByteChannel Channel;
-
-    BbiFileIterator Query(int idx, int from, int to, int binsize) {
-        return new BbiFileIterator(this, idx, from, to, binsize);
+    static int Down(int a, int b) {
+        return a/b;
     }
+    static int Up(int a, int b) {
+        return (a+b-1)/b;
+    }
+
 }

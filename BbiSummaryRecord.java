@@ -14,10 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class BbiSummaryRecord extends BbiSummaryStatistics {
+public class BbiSummaryRecord extends BbiSummaryStatistics {
 
-    long ChromId;
-    long From;
-    long To;
+    public long ChromId;
+    public long From;
+    public long To;
 
 }

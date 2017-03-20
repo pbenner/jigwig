@@ -24,8 +24,6 @@ public class bigWigFile extends BbiFile {
 
     static final int MAGIC = 0x888FFC26;
 
-    SeekableByteChannel Channel;
-
     public bigWigFile(SeekableByteChannel channel) throws IOException {
         Header = new BbiHeader();
         // parse header

@@ -14,19 +14,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.nio.channels.SeekableByteChannel;
+import java.io.IOException;
 
 /* -------------------------------------------------------------------------- */
 
-class BbiFile {
-    BbiHeader Header;
-    BData     ChromData;
-    RTree     Index;
-    RTree[]   IndexZoom;
+public class BbiFileIteratorType {
+    BbiSummaryRecord summary;
+    IOException exception;
 
-    SeekableByteChannel Channel;
+    BbiFileIteratorType(BbiSummaryRecord summary) {
+        this.summary = summary;
+    }
+    BbiFileIteratorType(IOException exception) {
+        this.exception = exception;
+    }
 
-    BbiFileIterator Query(int idx, int from, int to, int binsize) {
-        return new BbiFileIterator(this, idx, from, to, binsize);
+    public BbiSummaryRecord GetSummary() throws IOException {
+        if (exception != null) {
+            throw exception;
+        }
+        return summary;
     }
 }

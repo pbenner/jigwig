@@ -14,19 +14,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.nio.channels.SeekableByteChannel;
+import java.lang.String;
 
 /* -------------------------------------------------------------------------- */
 
-class BbiFile {
-    BbiHeader Header;
-    BData     ChromData;
-    RTree     Index;
-    RTree[]   IndexZoom;
+class Genome {
 
-    SeekableByteChannel Channel;
+    String[] Seqnames;
+    int   [] Lengths;
 
-    BbiFileIterator Query(int idx, int from, int to, int binsize) {
-        return new BbiFileIterator(this, idx, from, to, binsize);
+    Genome(String[] seqnames, int[] lengths) {
+        Seqnames = seqnames;
+        Lengths  = lengths;
+    }
+
+    int GetIdx(String seqname) {
+        int idx = -1;
+        for (int i = 0; i < Seqnames.length; i++) {
+            if (seqname.compareTo(Seqnames[i]) == 0) {
+                idx = i;
+                break;
+            }
+        }
+        return idx;
     }
 }

@@ -18,18 +18,18 @@ import java.lang.Math;
 
 /* -------------------------------------------------------------------------- */
 
-class BbiSummaryStatistics {
-    long   Valid;
-    double Min;
-    double Max;
-    double Sum;
-    double SumSquares;
+public class BbiSummaryStatistics {
+    public long   Valid;
+    public double Min;
+    public double Max;
+    public double Sum;
+    public double SumSquares;
 
     BbiSummaryStatistics() {
-        reset();
+        Reset();
     }
 
-    void reset() {
+    void Reset() {
         Valid      = 0;
         Min        =  Double.POSITIVE_INFINITY;
         Max        = -Double.POSITIVE_INFINITY;
@@ -37,7 +37,7 @@ class BbiSummaryStatistics {
         SumSquares = 0.0;
     }
 
-    void addRecord(BbiSummaryStatistics x) {
+    void AddRecord(BbiSummaryStatistics x) {
         Valid      += x.Valid;
         Min         = Math.min(Min, x.Min);
         Max         = Math.max(Max, x.Max);
@@ -45,7 +45,7 @@ class BbiSummaryStatistics {
         SumSquares += x.SumSquares;
     }
 
-    void addValue(double x) {
+    void AddValue(double x) {
         Valid      += 1;
         Min         = Math.min(Min, x);
         Max         = Math.max(Max, x);
