@@ -95,7 +95,7 @@ class BData {
         ByteBuffer buffer = ByteBuffer.allocate(6*32/8 + 1*64/8);
         buffer.order(byteOrder);
         // read header
-        channel.read(buffer);
+        channel.read(buffer); buffer.rewind();
         Magic         = unsigned.getInt (buffer);
         ItemsPerBlock = unsigned.getInt (buffer);
         KeySize       = unsigned.getInt (buffer);

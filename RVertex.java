@@ -111,6 +111,7 @@ class RVertex {
             }
         }
         if (IsLeaf != 0) {
+            Children = new RVertex[NChildren];
             for (int i = 0; i < NChildren; i++) {
                 channel.position(DataOffset[i]);
                 Children[i] = new RVertex();

@@ -22,7 +22,7 @@ import java.nio.channels.SeekableByteChannel;
 
 public class bigWigFile extends BbiFile {
 
-    static final int MAGIC = 0x888FFC26;
+    static final long MAGIC = 0x888FFC26L;
 
     public bigWigFile(SeekableByteChannel channel) throws IOException {
         Header = new BbiHeader();

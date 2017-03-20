@@ -53,7 +53,7 @@ class BbiHeader {
 
     ByteOrder byteOrder;
 
-    boolean readMagic(SeekableByteChannel channel, int magic, ByteOrder byteOrder) throws IOException {
+    boolean readMagic(SeekableByteChannel channel, long magic, ByteOrder byteOrder) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(32/8);
         buffer.order(byteOrder);
         channel.read(buffer);
@@ -62,7 +62,7 @@ class BbiHeader {
         return Magic == magic;
     }
 
-    void Read(SeekableByteChannel channel, int magic) throws IOException {
+    void Read(SeekableByteChannel channel, long magic) throws IOException {
         long position = channel.position();
 
         // check magic number and determine byte order,
@@ -84,7 +84,6 @@ class BbiHeader {
         channel.read(buffer);
         buffer.rewind();
 
-        Magic             = unsigned.getInt  (buffer);
         Version           = unsigned.getShort(buffer);
         ZoomLevels        = unsigned.getShort(buffer);
         CtOffset          = unsigned.getLong (buffer);
