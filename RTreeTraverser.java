@@ -22,6 +22,8 @@ class RTreeTraverserType {
     RVertex Vertex;
     int     Idx;
 
+    RTreeTraverserType() {
+    }
     RTreeTraverserType(RVertex vertex, int idx) {
         Vertex = vertex;
         Idx  = idx;
@@ -40,6 +42,7 @@ class RTreeTraverser {
         this.idx   = idx;
         this.from  = from;
         this.to    = to;
+        this.r     = new RTreeTraverserType();
         this.stack = new Stack<RTreeTraverserType>();
         this.stack.push(new RTreeTraverserType(tree.Root, 0));
         this.Next();
