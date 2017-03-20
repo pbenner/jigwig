@@ -134,17 +134,21 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
                 if (binsize % (record.To - record.From) != 0) {
                     throw new IOException("invalid bin size");
                 }
-                // stop if current result record is full
-                if (result_next.From != result_next.To && (result_next.To - result_next.From) >= binsize) {
-                    break;
+                // set `from' if this is the first record
+                if (result_next.Valid == 0) {
+                    result_next.From = record.From;
                 }
                 // add contents of current record to the resulting record
                 result_next.AddRecord(record);
                 result_next.To = record.To;
+                // stop if current result record is full
+                if (result_next.To - result_next.From >= binsize) {
+                    break;
+                }
             }
         }
         // check if new data was found
-        if (result_next.From == result_next.To) {
+        if (result_next.Valid == 0) {
             result_next = null;
         }
         return result;
