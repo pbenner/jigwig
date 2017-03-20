@@ -92,7 +92,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
         }
     }
 
-    public BbiSummaryRecord next_() throws IOException {
+    BbiSummaryRecord next_() throws IOException {
         BbiSummaryRecord record;
         // calling next is invalid if result_next was already
         // set to null by a previous call
