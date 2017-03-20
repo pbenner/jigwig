@@ -130,7 +130,6 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
                     break;
                 }
             }
-            System.out.println("parsing block");
             // loop over block
             for (record = decoderIterator.Get(); decoderIterator.Ok(); decoderIterator.Next()) {
                 if (record.From < from || record.To > to) {
