@@ -110,8 +110,7 @@ class RVertex {
                 Sizes  [i] = unsigned.getLong(buffer);
             }
         }
-        if (IsLeaf != 0) {
-            Children = new RVertex[NChildren];
+        if (IsLeaf == 0) {
             for (int i = 0; i < NChildren; i++) {
                 channel.position(DataOffset[i]);
                 Children[i] = new RVertex();

@@ -49,6 +49,10 @@ class RTree {
         buffer.rewind();
 
         Magic         = unsigned.getInt (buffer);
+        // check magic number
+        if (Magic != MAGIC) {
+            throw new IOException("RTree has invalid magic number");
+        }
         BlockSize     = unsigned.getInt (buffer);
         NItems        = unsigned.getLong(buffer);
         ChrIdxStart   = unsigned.getInt (buffer);
@@ -59,10 +63,6 @@ class RTree {
         NItemsPerSlot = unsigned.getInt (buffer);
         // padding
         buffer.getInt();
-        // check magic number
-        if (Magic != MAGIC) {
-            throw new IOException("RTree has invalid magic numner");
-        }
         // parse tree
         Root = new RVertex();
         Root.Read(channel, byteOrder);

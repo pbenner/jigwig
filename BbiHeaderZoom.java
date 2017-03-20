@@ -27,12 +27,11 @@ class BbiHeaderZoom {
     long Reserved;
     long DataOffset;
     long IndexOffset;
-    long NBlocks;
     long PtrDataOffset;
     long PtrIndexOffset;
 
     void Read(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(3*32/8 + 2*64/8);
+        ByteBuffer buffer = ByteBuffer.allocate(2*32/8 + 2*64/8);
         buffer.order(byteOrder);
         // determine offset positions
         PtrDataOffset  = channel.position() + 1*64/8;
@@ -44,7 +43,6 @@ class BbiHeaderZoom {
         Reserved       = unsigned.getInt (buffer);
         DataOffset     = unsigned.getLong(buffer);
         IndexOffset    = unsigned.getLong(buffer);
-        NBlocks        = unsigned.getInt (buffer);
     }
 
 }
