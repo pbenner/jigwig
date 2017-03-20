@@ -24,6 +24,8 @@ public class bigWigFile extends BbiFile {
 
     static final int MAGIC = 0x888FFC26;
 
+    Genome genome;
+
     public bigWigFile(SeekableByteChannel channel) throws IOException {
         Header = new BbiHeader();
         // parse header
@@ -43,5 +45,28 @@ public class bigWigFile extends BbiFile {
             IndexZoom[i] = new RTree();
             IndexZoom[i].Read(channel, Header.byteOrder);
         }
+        // convert BData to Genome
+        int n = ChromData.Keys.size();
+        String[] seqnames  = new String[n];
+        int   [] seqlength = new int[n];
+        for (int i = 0; i < n; i++) {
+            // parse sequence name
+            seqnames[i] = new String(ChromData.Keys.get(i));
+            seqnames[i] = seqnames[i].trim();
+            // parse sequence length
+            ByteBuffer buffer = ByteBuffer.wrap(ChromData.Values.get(i), 0,
+                                                ChromData.Values.get(i).length);
+            buffer.order(Header.byteOrder);
+            seqlength[i] = buffer.getInt();
+        }
+        genome = new Genome(seqnames, seqlength);
+    }
+
+    public BbiFileIterator Query(String seqname, int from, int to, int binsize) throws IOException {
+        int idx = genome.GetIdx(seqname);
+        if (idx == -1) {
+            throw new IOException("sequence not found");
+        }
+        return new BbiFileIterator(this, idx, from, to, binsize);
     }
 }
