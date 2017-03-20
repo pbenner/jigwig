@@ -46,9 +46,9 @@ class BData {
         int nVals = unsigned.getShort(buffer);
         for (int i = 0; i < nVals; i++) {
             bufKey.rewind(); channel.read(bufKey); bufKey.rewind();
-            bufKey.rewind(); channel.read(bufVal); bufKey.rewind();
+            bufVal.rewind(); channel.read(bufVal); bufVal.rewind();
             Keys  .add(bufKey.array().clone());
-            Values.add(bufKey.array().clone());
+            Values.add(bufVal.array().clone());
         }
     }
 
@@ -64,7 +64,7 @@ class BData {
         long position, currentPosition;
         for (int i = 0; i < nVals; i++) {
             bufKey.rewind(); channel.read(bufKey); bufKey.rewind();
-            bufKey.rewind(); channel.read(bufVal); bufKey.rewind();
+            bufVal.rewind(); channel.read(bufVal); bufVal.rewind();
             position = unsigned.getLong(bufVal);
             // save current position and jump to child vertex
             currentPosition = channel.position();
@@ -76,7 +76,7 @@ class BData {
     }
 
     void readVertex(SeekableByteChannel channel, ByteOrder byteOrder) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(2*32/8);
+        ByteBuffer buffer = ByteBuffer.allocate(2*8/8);
         buffer.order(byteOrder);
         channel.read(buffer); buffer.rewind();
         byte isLeaf = buffer.get();

@@ -50,14 +50,16 @@ public class bigWigFile extends BbiFile {
         String[] seqnames  = new String[n];
         int   [] seqlength = new int[n];
         for (int i = 0; i < n; i++) {
-            // parse sequence name
-            seqnames[i] = new String(ChromData.Keys.get(i));
-            seqnames[i] = seqnames[i].trim();
-            // parse sequence length
+            // parse index
             ByteBuffer buffer = ByteBuffer.wrap(ChromData.Values.get(i), 0,
                                                 ChromData.Values.get(i).length);
             buffer.order(Header.byteOrder);
-            seqlength[i] = buffer.getInt();
+            int idx = (int)unsigned.getInt(buffer);
+            // parse sequence length
+            seqlength[i] = (int)unsigned.getInt(buffer);
+            // parse sequence name
+            seqnames[i] = new String(ChromData.Keys.get(i));
+            seqnames[i] = seqnames[i].trim();
         }
         genome = new Genome(seqnames, seqlength);
     }
