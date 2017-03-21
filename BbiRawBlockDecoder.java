@@ -38,14 +38,17 @@ class BbiRawBlockDecoder implements BbiBlockDecoder {
             if (Buffer.remaining() % 12 != 0) {
                 throw new IOException("bedGraph data block has invalid length");
             }
+            break;
         case 2:
             if (Buffer.remaining() % 8 != 0) {
                 throw new IOException("variable step data block has invalid length");
             }
+            break;
         case 3:
             if (Buffer.remaining() % 4 != 0) {
                 throw new IOException("fixed step data block has invalid length");
             }
+            break;
         }
     }
 
