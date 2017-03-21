@@ -135,9 +135,6 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
                 if (record.From < from || record.To > to) {
                     continue;
                 }
-                if (binsize % (record.To - record.From) != 0) {
-                    throw new IOException("invalid bin size");
-                }
                 // set `from' if this is the first record
                 if (result_next.Valid == 0) {
                     result_next.From = record.From;

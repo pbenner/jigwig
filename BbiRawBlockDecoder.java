@@ -59,8 +59,8 @@ class BbiRawBlockDecoder implements BbiBlockDecoder {
         r.ChromId    = Header.ChromId;
         r.From       = Header.Start + i*Header.Step;
         r.To         = r.From + Header.Span;
-        r.Valid      = 1;
-        r.Sum        = Buffer.getFloat();
+        r.Valid      = Header.Span;
+        r.Sum        = r.Valid*Buffer.getFloat();
         r.SumSquares = r.Sum*r.Sum;
         r.Min        = r.Sum;
         r.Max        = r.Sum;
@@ -69,8 +69,8 @@ class BbiRawBlockDecoder implements BbiBlockDecoder {
         r.ChromId    = Header.ChromId;
         r.From       = unsigned.getInt(Buffer);
         r.To         = r.From + Header.Span;
-        r.Valid      = 1;
-        r.Sum        = Buffer.getFloat();
+        r.Valid      = Header.Span;
+        r.Sum        = r.Valid*Buffer.getFloat();
         r.SumSquares = r.Sum*r.Sum;
         r.Min        = r.Sum;
         r.Max        = r.Sum;
@@ -79,8 +79,8 @@ class BbiRawBlockDecoder implements BbiBlockDecoder {
         r.ChromId    = Header.ChromId;
         r.From       = unsigned.getInt(Buffer);
         r.To         = unsigned.getInt(Buffer);
-        r.Valid      = 1;
-        r.Sum        = Buffer.getFloat();
+        r.Valid      = r.To-r.From;
+        r.Sum        = r.Valid*Buffer.getFloat();
         r.SumSquares = r.Sum*r.Sum;
         r.Min        = r.Sum;
         r.Max        = r.Sum;

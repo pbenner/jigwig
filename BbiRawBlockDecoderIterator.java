@@ -45,11 +45,14 @@ class BbiRawBlockDecoderIterator implements BbiBlockDecoderIterator {
             switch (decoder.Header.Type) {
             case 1:
                 decoder.readBedGraph(result);
+                break;
             case 2:
                 decoder.readVariable(result);
+                break;
             case 3:
                 decoder.readFixed(result, i);
                 i++;
+                break;
             }
         }
     }

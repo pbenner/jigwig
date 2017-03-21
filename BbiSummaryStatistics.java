@@ -19,7 +19,7 @@ import java.lang.Math;
 /* -------------------------------------------------------------------------- */
 
 public class BbiSummaryStatistics {
-    public long   Valid;
+    public double Valid;
     public double Min;
     public double Max;
     public double Sum;
@@ -30,7 +30,7 @@ public class BbiSummaryStatistics {
     }
 
     void Reset() {
-        Valid      = 0;
+        Valid      = 0.0;
         Min        =  Double.POSITIVE_INFINITY;
         Max        = -Double.POSITIVE_INFINITY;
         Sum        = 0.0;
@@ -43,14 +43,6 @@ public class BbiSummaryStatistics {
         Max         = Math.max(Max, x.Max);
         Sum        += x.Sum;
         SumSquares += x.SumSquares;
-    }
-
-    void AddValue(double x) {
-        Valid      += 1;
-        Min         = Math.min(Min, x);
-        Max         = Math.max(Max, x);
-        Sum        += x;
-        SumSquares += x*x;
     }
 
 }
