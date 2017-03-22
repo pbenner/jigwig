@@ -41,10 +41,10 @@ class BbiHeaderZoom {
         // read header
         channel.read(buffer);
         buffer.rewind();
-        ReductionLevel = unsigned.getInt (buffer);
-        Reserved       = unsigned.getInt (buffer);
-        DataOffset     = unsigned.getLong(buffer);
-        IndexOffset    = unsigned.getLong(buffer);
+        ReductionLevel = Unsigned.getInt (buffer);
+        Reserved       = Unsigned.getInt (buffer);
+        DataOffset     = Unsigned.getLong(buffer);
+        IndexOffset    = Unsigned.getLong(buffer);
     }
 
 }

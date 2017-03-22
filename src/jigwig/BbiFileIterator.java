@@ -44,8 +44,8 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
 
     BbiFileIterator(BbiFile file, int idx, int from, int to, int binsize) throws IOException {
         if (binsize != 0) {
-            from = divInt.Down(from, binsize)*binsize;
-            to   = divInt.Up  (to,   binsize)*binsize;
+            from = DivInt.Down(from, binsize)*binsize;
+            to   = DivInt.Up  (to,   binsize)*binsize;
         }
         this.file    = file;
         this.idx     = idx;

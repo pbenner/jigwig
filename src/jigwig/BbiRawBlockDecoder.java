@@ -72,7 +72,7 @@ class BbiRawBlockDecoder implements BbiBlockDecoder {
     }
     void readVariable(BbiBlockDecoderType r) {
         r.ChromId    = Header.ChromId;
-        r.From       = unsigned.getInt(Buffer);
+        r.From       = Unsigned.getInt(Buffer);
         r.To         = r.From + Header.Span;
         r.Valid      = Header.Span;
         r.Sum        = r.Valid*Buffer.getFloat();
@@ -82,8 +82,8 @@ class BbiRawBlockDecoder implements BbiBlockDecoder {
     }
     void readBedGraph(BbiBlockDecoderType r) {
         r.ChromId    = Header.ChromId;
-        r.From       = unsigned.getInt(Buffer);
-        r.To         = unsigned.getInt(Buffer);
+        r.From       = Unsigned.getInt(Buffer);
+        r.To         = Unsigned.getInt(Buffer);
         r.Valid      = r.To-r.From;
         r.Sum        = r.Valid*Buffer.getFloat();
         r.SumSquares = r.Sum*r.Sum;

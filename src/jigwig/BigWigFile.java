@@ -22,13 +22,13 @@ import java.nio.channels.SeekableByteChannel;
 
 /* -------------------------------------------------------------------------- */
 
-public class bigWigFile extends BbiFile {
+public class BigWigFile extends BbiFile {
 
     static final long MAGIC = 0x888FFC26L;
 
     Genome genome;
 
-    public bigWigFile(SeekableByteChannel channel) throws IOException {
+    public BigWigFile(SeekableByteChannel channel) throws IOException {
         super(channel, MAGIC);
         // convert BData to Genome
         int n = ChromData.Keys.size();
@@ -39,9 +39,9 @@ public class bigWigFile extends BbiFile {
             ByteBuffer buffer = ByteBuffer.wrap(ChromData.Values.get(i), 0,
                                                 ChromData.Values.get(i).length);
             buffer.order(Header.byteOrder);
-            int idx = (int)unsigned.getInt(buffer);
+            int idx = (int) Unsigned.getInt(buffer);
             // parse sequence length
-            seqlength[i] = (int)unsigned.getInt(buffer);
+            seqlength[i] = (int) Unsigned.getInt(buffer);
             // parse sequence name
             seqnames[i] = new String(ChromData.Keys.get(i));
             seqnames[i] = seqnames[i].trim();

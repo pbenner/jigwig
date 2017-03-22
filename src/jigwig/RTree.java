@@ -50,19 +50,19 @@ class RTree {
         channel.read(buffer);
         buffer.rewind();
 
-        Magic         = unsigned.getInt (buffer);
+        Magic         = Unsigned.getInt (buffer);
         // check magic number
         if (Magic != MAGIC) {
             throw new IOException("RTree has invalid magic number");
         }
-        BlockSize     = unsigned.getInt (buffer);
-        NItems        = unsigned.getLong(buffer);
-        ChrIdxStart   = unsigned.getInt (buffer);
-        BaseStart     = unsigned.getInt (buffer);
-        ChrIdxEnd     = unsigned.getInt (buffer);
-        BaseEnd       = unsigned.getInt (buffer);
-        IdxSize       = unsigned.getLong(buffer);
-        NItemsPerSlot = unsigned.getInt (buffer);
+        BlockSize     = Unsigned.getInt (buffer);
+        NItems        = Unsigned.getLong(buffer);
+        ChrIdxStart   = Unsigned.getInt (buffer);
+        BaseStart     = Unsigned.getInt (buffer);
+        ChrIdxEnd     = Unsigned.getInt (buffer);
+        BaseEnd       = Unsigned.getInt (buffer);
+        IdxSize       = Unsigned.getLong(buffer);
+        NItemsPerSlot = Unsigned.getInt (buffer);
         // padding
         buffer.getInt();
         // parse tree

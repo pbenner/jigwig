@@ -60,7 +60,7 @@ class BbiHeader {
         buffer.order(byteOrder);
         channel.read(buffer);
         buffer.rewind();
-        Magic = unsigned.getInt(buffer);
+        Magic = Unsigned.getInt(buffer);
         return Magic == magic;
     }
 
@@ -86,17 +86,17 @@ class BbiHeader {
         channel.read(buffer);
         buffer.rewind();
 
-        Version           = unsigned.getShort(buffer);
-        ZoomLevels        = unsigned.getShort(buffer);
-        CtOffset          = unsigned.getLong (buffer);
-        DataOffset        = unsigned.getLong (buffer);
-        IndexOffset       = unsigned.getLong (buffer);
-        FieldCount        = unsigned.getShort(buffer);
-        DefinedFieldCount = unsigned.getShort(buffer);
-        SqlOffset         = unsigned.getLong (buffer);
-        SummaryOffset     = unsigned.getLong (buffer);
-        UncompressBufSize = unsigned.getInt  (buffer);
-        ExtensionOffset   = unsigned.getLong (buffer);
+        Version           = Unsigned.getShort(buffer);
+        ZoomLevels        = Unsigned.getShort(buffer);
+        CtOffset          = Unsigned.getLong (buffer);
+        DataOffset        = Unsigned.getLong (buffer);
+        IndexOffset       = Unsigned.getLong (buffer);
+        FieldCount        = Unsigned.getShort(buffer);
+        DefinedFieldCount = Unsigned.getShort(buffer);
+        SqlOffset         = Unsigned.getLong (buffer);
+        SummaryOffset     = Unsigned.getLong (buffer);
+        UncompressBufSize = Unsigned.getInt  (buffer);
+        ExtensionOffset   = Unsigned.getLong (buffer);
 
         ZoomHeaders = new BbiHeaderZoom[ZoomLevels];
         for (int i = 0; i < ZoomLevels; i++) {
@@ -109,11 +109,11 @@ class BbiHeader {
             channel.position(SummaryOffset);
             channel.read(buffer);
             buffer.rewind();
-            NBasesCovered     = unsigned.getLong(buffer);
-            MinVal            = unsigned.getLong(buffer);
-            MaxVal            = unsigned.getLong(buffer);
-            SumData           = unsigned.getLong(buffer);
-            SumSquared        = unsigned.getLong(buffer);
+            NBasesCovered     = Unsigned.getLong(buffer);
+            MinVal            = Unsigned.getLong(buffer);
+            MaxVal            = Unsigned.getLong(buffer);
+            SumData           = Unsigned.getLong(buffer);
+            SumSquared        = Unsigned.getLong(buffer);
         }
         // set pointers
         PtrCtOffset          = position + 1*64/8;

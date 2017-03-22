@@ -75,7 +75,7 @@ class RVertex {
         IsLeaf = buffer.get();
         // padding
         buffer.get();
-        NChildren = unsigned.getShort(buffer);
+        NChildren = Unsigned.getShort(buffer);
         // allocate memory
         ChrIdxStart   = new long[NChildren];
         BaseStart     = new long[NChildren];
@@ -103,13 +103,13 @@ class RVertex {
             }
             buffer.rewind(); channel.read(buffer);
             buffer.rewind();
-            ChrIdxStart[i] = unsigned.getInt (buffer);
-            BaseStart  [i] = unsigned.getInt (buffer);
-            ChrIdxEnd  [i] = unsigned.getInt (buffer);
-            BaseEnd    [i] = unsigned.getInt (buffer);
-            DataOffset [i] = unsigned.getLong(buffer);
+            ChrIdxStart[i] = Unsigned.getInt (buffer);
+            BaseStart  [i] = Unsigned.getInt (buffer);
+            ChrIdxEnd  [i] = Unsigned.getInt (buffer);
+            BaseEnd    [i] = Unsigned.getInt (buffer);
+            DataOffset [i] = Unsigned.getLong(buffer);
             if (IsLeaf != 0) {
-                Sizes  [i] = unsigned.getLong(buffer);
+                Sizes  [i] = Unsigned.getLong(buffer);
             }
         }
         if (IsLeaf == 0) {

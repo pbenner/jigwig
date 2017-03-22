@@ -45,7 +45,7 @@ class BData {
         bufKey.order(byteOrder);
         bufVal.order(byteOrder);
         channel.read(buffer); buffer.rewind();
-        int nVals = unsigned.getShort(buffer);
+        int nVals = Unsigned.getShort(buffer);
         for (int i = 0; i < nVals; i++) {
             bufKey.rewind(); channel.read(bufKey); bufKey.rewind();
             bufVal.rewind(); channel.read(bufVal); bufVal.rewind();
@@ -62,12 +62,12 @@ class BData {
         bufKey.order(byteOrder);
         bufVal.order(byteOrder);
         channel.read(buffer); buffer.rewind();
-        int  nVals = unsigned.getShort(buffer);
+        int  nVals = Unsigned.getShort(buffer);
         long position, currentPosition;
         for (int i = 0; i < nVals; i++) {
             bufKey.rewind(); channel.read(bufKey); bufKey.rewind();
             bufVal.rewind(); channel.read(bufVal); bufVal.rewind();
-            position = unsigned.getLong(bufVal);
+            position = Unsigned.getLong(bufVal);
             // save current position and jump to child vertex
             currentPosition = channel.position();
             channel.position(position);
@@ -98,11 +98,11 @@ class BData {
         buffer.order(byteOrder);
         // read header
         channel.read(buffer); buffer.rewind();
-        Magic         = unsigned.getInt (buffer);
-        ItemsPerBlock = unsigned.getInt (buffer);
-        KeySize       = unsigned.getInt (buffer);
-        ValueSize     = unsigned.getInt (buffer);
-        ItemCount     = unsigned.getLong(buffer);
+        Magic         = Unsigned.getInt (buffer);
+        ItemsPerBlock = Unsigned.getInt (buffer);
+        KeySize       = Unsigned.getInt (buffer);
+        ValueSize     = Unsigned.getInt (buffer);
+        ItemCount     = Unsigned.getLong(buffer);
         // padding
         buffer.getLong();
         // check magic number
