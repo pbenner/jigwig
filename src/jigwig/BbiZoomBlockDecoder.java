@@ -14,35 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.lang.Math;
+package jigwig;
+
+import java.nio.ByteBuffer;
 
 /* -------------------------------------------------------------------------- */
 
-public class BbiSummaryStatistics {
-    public double Valid;
-    public double Min;
-    public double Max;
-    public double Sum;
-    public double SumSquares;
+class BbiZoomBlockDecoder implements BbiBlockDecoder {
 
-    BbiSummaryStatistics() {
-        Reset();
+    ByteBuffer Buffer;
+
+    public BbiZoomBlockDecoder(ByteBuffer buffer) {
+        this.Buffer = buffer;
     }
 
-    void Reset() {
-        Valid      = 0.0;
-        Min        =  Double.POSITIVE_INFINITY;
-        Max        = -Double.POSITIVE_INFINITY;
-        Sum        = 0.0;
-        SumSquares = 0.0;
-    }
-
-    void AddRecord(BbiSummaryStatistics x) {
-        Valid      += x.Valid;
-        Min         = Math.min(Min, x.Min);
-        Max         = Math.max(Max, x.Max);
-        Sum        += x.Sum;
-        SumSquares += x.SumSquares;
+    public BbiBlockDecoderIterator Decode() {
+        BbiZoomBlockDecoderIterator it = new BbiZoomBlockDecoderIterator(this);
+        it.Next();
+        return it;
     }
 
 }

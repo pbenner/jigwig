@@ -14,35 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.nio.ByteBuffer;
+package jigwig;
 
 /* -------------------------------------------------------------------------- */
 
-class BbiDataHeader {
-    long ChromId;
-    long Start;
-    long End;
-    long Step;
-    long Span;
-    byte Type;
-    byte Reserved;
-    int  ItemCount;
+class RTreeTraverserType {
+    RVertex Vertex;
+    int     Idx;
 
-    BbiDataHeader(ByteBuffer buffer) {
-        read(buffer);
+    RTreeTraverserType() {
     }
-
-    void read(ByteBuffer buffer) {
-
-        ChromId   = unsigned.getInt(buffer);
-        Start     = unsigned.getInt(buffer);
-        End       = unsigned.getInt(buffer);
-        Step      = unsigned.getInt(buffer);
-        Span      = unsigned.getInt(buffer);
-        Type      = buffer.get();
-        Reserved  = buffer.get();
-        ItemCount = unsigned.getShort(buffer);
-
-      }
-
+    RTreeTraverserType(RVertex vertex, int idx) {
+        Vertex = vertex;
+        Idx  = idx;
+    }
 }

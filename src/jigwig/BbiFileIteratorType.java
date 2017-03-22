@@ -14,10 +14,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class BbiSummaryRecord extends BbiSummaryStatistics {
+package jigwig;
 
-    public long ChromId;
-    public long From;
-    public long To;
+import java.io.IOException;
 
+/* -------------------------------------------------------------------------- */
+
+public class BbiFileIteratorType {
+    BbiSummaryRecord summary;
+    IOException exception;
+
+    BbiFileIteratorType(BbiSummaryRecord summary) {
+        this.summary = summary;
+    }
+    BbiFileIteratorType(IOException exception) {
+        this.exception = exception;
+    }
+
+    public BbiSummaryRecord GetSummary() throws IOException {
+        if (exception != null) {
+            throw exception;
+        }
+        return summary;
+    }
 }

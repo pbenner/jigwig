@@ -14,26 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
+package jigwig;
 
-/* -------------------------------------------------------------------------- */
+class divInt {
 
-class unsigned {
-    static short getByte(ByteBuffer buffer) {
-        return ((short)(buffer.get() & 0xff));
+    static int Down(int a, int b) {
+        return a/b;
     }
-    static int getShort(ByteBuffer buffer) {
-        return (buffer.getShort() & 0xffff);
+    static int Up(int a, int b) {
+        return (a+b-1)/b;
     }
-    static long getInt(ByteBuffer buffer) {
-        return ((long)buffer.getInt() & 0xffffffffL);
-    }
-    static long getLong(ByteBuffer buffer) throws IOException {
-        long r = buffer.getLong();
-        if (r < 0) {
-            throw new IOException("integer overflow");
-        }
-        return r;
-    }
+
 }

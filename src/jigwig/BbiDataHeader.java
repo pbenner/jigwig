@@ -14,39 +14,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package jigwig;
+
 import java.nio.ByteBuffer;
 
 /* -------------------------------------------------------------------------- */
 
-class BbiZoomRecord {
+class BbiDataHeader {
     long ChromId;
     long Start;
     long End;
-    long Valid;
-    double Min;
-    double Max;
-    double Sum;
-    double SumSquares;
+    long Step;
+    long Span;
+    byte Type;
+    byte Reserved;
+    int  ItemCount;
 
-    void Read(ByteBuffer buffer) {
-        ChromId    = unsigned.getInt(buffer);
-        Start      = unsigned.getInt(buffer);
-        End        = unsigned.getInt(buffer);
-        Valid      = unsigned.getInt(buffer);
-        Min        = buffer.getFloat();
-        Max        = buffer.getFloat();
-        Sum        = buffer.getFloat();
-        SumSquares = buffer.getFloat();
+    BbiDataHeader(ByteBuffer buffer) {
+        read(buffer);
     }
-    void AddValue(double x) {
-        if (Min > x) {
-            Min = x;
-        }
-        if (Max < x) {
-            Max = x;
-        }
-        Valid      += 1;
-        Sum        += x;
-        SumSquares += x*x;
-    }
+
+    void read(ByteBuffer buffer) {
+
+        ChromId   = unsigned.getInt(buffer);
+        Start     = unsigned.getInt(buffer);
+        End       = unsigned.getInt(buffer);
+        Step      = unsigned.getInt(buffer);
+        Span      = unsigned.getInt(buffer);
+        Type      = buffer.get();
+        Reserved  = buffer.get();
+        ItemCount = unsigned.getShort(buffer);
+
+      }
+
 }

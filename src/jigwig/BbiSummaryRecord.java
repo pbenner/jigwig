@@ -14,13 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class divInt {
+package jigwig;
 
-    static int Down(int a, int b) {
-        return a/b;
-    }
-    static int Up(int a, int b) {
-        return (a+b-1)/b;
-    }
+public class BbiSummaryRecord extends BbiSummaryStatistics {
+
+    public long ChromId;
+    public long From;
+    public long To;
 
 }

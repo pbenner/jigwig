@@ -14,21 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package jigwig;
+
 import java.util.Stack;
 
 /* -------------------------------------------------------------------------- */
 
-class RTreeTraverserType {
-    RVertex Vertex;
-    int     Idx;
-
-    RTreeTraverserType() {
-    }
-    RTreeTraverserType(RVertex vertex, int idx) {
-        Vertex = vertex;
-        Idx  = idx;
-    }
-}
 
 class RTreeTraverser {
 

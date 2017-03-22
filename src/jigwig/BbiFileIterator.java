@@ -14,12 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package jigwig;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.lang.UnsupportedOperationException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SeekableByteChannel;
 
 /* -------------------------------------------------------------------------- */
 

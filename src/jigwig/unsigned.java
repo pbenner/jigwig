@@ -14,25 +14,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package jigwig;
+
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 /* -------------------------------------------------------------------------- */
 
-public class BbiFileIteratorType {
-    BbiSummaryRecord summary;
-    IOException exception;
-
-    BbiFileIteratorType(BbiSummaryRecord summary) {
-        this.summary = summary;
+class unsigned {
+    static short getByte(ByteBuffer buffer) {
+        return ((short)(buffer.get() & 0xff));
     }
-    BbiFileIteratorType(IOException exception) {
-        this.exception = exception;
+    static int getShort(ByteBuffer buffer) {
+        return (buffer.getShort() & 0xffff);
     }
-
-    public BbiSummaryRecord GetSummary() throws IOException {
-        if (exception != null) {
-            throw exception;
+    static long getInt(ByteBuffer buffer) {
+        return ((long)buffer.getInt() & 0xffffffffL);
+    }
+    static long getLong(ByteBuffer buffer) throws IOException {
+        long r = buffer.getLong();
+        if (r < 0) {
+            throw new IOException("integer overflow");
         }
-        return summary;
+        return r;
     }
 }

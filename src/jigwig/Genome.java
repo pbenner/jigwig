@@ -14,10 +14,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface BbiBlockDecoderIterator {
+package jigwig;
 
-    BbiBlockDecoderType Get ();
-    boolean             Ok  ();
-    void                Next();
+import java.lang.String;
 
+/* -------------------------------------------------------------------------- */
+
+class Genome {
+
+    String[] Seqnames;
+    int   [] Lengths;
+
+    Genome(String[] seqnames, int[] lengths) {
+        Seqnames = seqnames;
+        Lengths  = lengths;
+    }
+
+    int GetIdx(String seqname) {
+        int idx = -1;
+        for (int i = 0; i < Seqnames.length; i++) {
+            if (seqname.compareTo(Seqnames[i]) == 0) {
+                idx = i;
+                break;
+            }
+        }
+        return idx;
+    }
 }

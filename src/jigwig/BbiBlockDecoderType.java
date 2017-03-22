@@ -14,28 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.lang.String;
+package jigwig;
 
-/* -------------------------------------------------------------------------- */
-
-class Genome {
-
-    String[] Seqnames;
-    int   [] Lengths;
-
-    Genome(String[] seqnames, int[] lengths) {
-        Seqnames = seqnames;
-        Lengths  = lengths;
-    }
-
-    int GetIdx(String seqname) {
-        int idx = -1;
-        for (int i = 0; i < Seqnames.length; i++) {
-            if (seqname.compareTo(Seqnames[i]) == 0) {
-                idx = i;
-                break;
-            }
-        }
-        return idx;
-    }
+class BbiBlockDecoderType extends BbiSummaryRecord {
 }
+

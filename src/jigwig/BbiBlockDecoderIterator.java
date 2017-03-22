@@ -14,6 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class BbiBlockDecoderType extends BbiSummaryRecord {
-}
+package jigwig;
 
+interface BbiBlockDecoderIterator {
+
+    BbiBlockDecoderType Get ();
+    boolean             Ok  ();
+    void                Next();
+
+}

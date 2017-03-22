@@ -14,23 +14,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.io.IOException;
+package jigwig;
+
 import java.nio.ByteBuffer;
 
 /* -------------------------------------------------------------------------- */
 
-class BbiZoomBlockDecoder implements BbiBlockDecoder {
+class BbiZoomRecord {
+    long ChromId;
+    long Start;
+    long End;
+    long Valid;
+    double Min;
+    double Max;
+    double Sum;
+    double SumSquares;
 
-    ByteBuffer Buffer;
-
-    public BbiZoomBlockDecoder(ByteBuffer buffer) {
-        this.Buffer = buffer;
+    void Read(ByteBuffer buffer) {
+        ChromId    = unsigned.getInt(buffer);
+        Start      = unsigned.getInt(buffer);
+        End        = unsigned.getInt(buffer);
+        Valid      = unsigned.getInt(buffer);
+        Min        = buffer.getFloat();
+        Max        = buffer.getFloat();
+        Sum        = buffer.getFloat();
+        SumSquares = buffer.getFloat();
     }
-
-    public BbiBlockDecoderIterator Decode() {
-        BbiZoomBlockDecoderIterator it = new BbiZoomBlockDecoderIterator(this);
-        it.Next();
-        return it;
+    void AddValue(double x) {
+        if (Min > x) {
+            Min = x;
+        }
+        if (Max < x) {
+            Max = x;
+        }
+        Valid      += 1;
+        Sum        += x;
+        SumSquares += x*x;
     }
-
 }
