@@ -22,4 +22,24 @@ public class BbiSummaryRecord extends BbiSummaryStatistics {
     public long From;
     public long To;
 
+    /**
+     * Getter for From attribute, performs overflow checks if form value exceeds Integer range
+     * @return From
+     */
+    public int getFrom() {
+        if(From > Integer.MAX_VALUE) throw new AssertionError();
+        if(From < Integer.MIN_VALUE) throw new AssertionError();
+        return (int) From;
+    }
+
+    /**
+     * Getter for To attribute, performs overflow checks if form value exceeds Integer range
+     * @return To
+     */
+    public int getTo() {
+        if(To > Integer.MAX_VALUE) throw new AssertionError();
+        if(To < Integer.MIN_VALUE) throw new AssertionError();
+        return (int) To;
+    }
+
 }

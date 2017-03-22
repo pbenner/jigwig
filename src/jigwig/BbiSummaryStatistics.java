@@ -47,4 +47,11 @@ public class BbiSummaryStatistics {
         SumSquares += x.SumSquares;
     }
 
+    public double getMax() { return Max; }
+
+    public double getMin() { return Min; }
+
+    public double getSum() { return Sum; }
+
+    public double getMean() { return Sum/Valid; }
 }

@@ -13,7 +13,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package jigwig;
 
 import java.io.IOException;
@@ -54,4 +53,24 @@ class BbiFile {
     BbiFileIterator Query(int idx, int from, int to, int binsize) throws IOException {
         return new BbiFileIterator(this, idx, from, to, binsize);
     }
+
+    /**
+     * BinSizes for different zoom leves as integer
+     * Perform overflow checks, when casting from long to int
+     * @return
+     */
+    public int[] getZoomLevelBinSizes() {
+
+        int[] binSizes = new int[Header.ZoomHeaders.length];
+
+        for(int i = 0; i < Header.ZoomHeaders.length; i++) {
+
+            long bs = Header.ZoomHeaders[i].ReductionLevel;
+            if(bs > Integer.MAX_VALUE) throw new AssertionError();
+            if(bs < 1) throw new AssertionError();
+            binSizes[i] = (int) bs;
+        }
+        return binSizes;
+    }
+
 }
