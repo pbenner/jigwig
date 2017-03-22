@@ -132,6 +132,9 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
             }
             // loop over block
             for (record = decoderIterator.Get(); decoderIterator.Ok(); decoderIterator.Next()) {
+                if (record.ChromId != idx) {
+                    continue;
+                }
                 if (record.From < from || record.To > to) {
                     continue;
                 }
