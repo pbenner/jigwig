@@ -1,0 +1,49 @@
+<project name="jigwig" default="dist" basedir=".">
+    <description>
+        jigwig library build file
+    </description>
+    <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <property name="dist" location="dist"/>
+    <property name="version" value="0.1"/>
+
+    <target name="init">
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+    </target>
+
+    <target name="compile" depends="init"
+            description="compile the source">
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
+            <compilerarg value="-Xlint:unchecked"/>
+        </javac>
+    </target>
+
+    <target name="gitinfo" >
+        <exec executable="git" outputproperty="git.revision">
+            <arg value="rev-parse"/>
+            <arg value="HEAD"/>
+        </exec>
+    </target>
+
+    <target name="dist" depends="compile,gitinfo"
+            description="generate the distribution">
+        <jar jarfile="${dist}/jigwig-${version}.jar" basedir="${build}">
+            <manifest>
+                <attribute name="Specification-Version" value="${version}"/>
+                <attribute name="Implementation-Version" value="${git.revision}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="clean"
+            description="clean up">
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+</project>
