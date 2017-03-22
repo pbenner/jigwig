@@ -88,7 +88,6 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
         }
         catch (IOException e) {
             result_next = null;
-            System.out.println(e);
             return new BbiFileIteratorType(e);
         }
     }
