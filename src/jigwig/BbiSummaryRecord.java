@@ -29,6 +29,25 @@ public class BbiSummaryRecord extends BbiSummaryStatistics {
         To      = 0;
     }
 
+    void AddRecord(BbiSummaryRecord x) {
+        if (To < x.From) {
+            // fill gaps with zeros
+            Valid += x.From - To;
+            if (Min > 0.0) {
+                Min = 0.0;
+            }
+            if (Max < 0.0) {
+                Max = 0.0;
+            }
+        }
+        To          = x.To;
+        Valid      += x.Valid;
+        Min         = Math.min(Min, x.Min);
+        Max         = Math.max(Max, x.Max);
+        Sum        += x.Sum;
+        SumSquares += x.SumSquares;
+    }
+
     /**
      * Getter for From attribute, performs overflow checks if form value exceeds Integer range
      * @return From

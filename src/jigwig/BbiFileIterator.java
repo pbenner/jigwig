@@ -141,13 +141,13 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
                 // set `from' if this is the first record
                 if (result_next.Valid == 0) {
                     result_next.From = record.From;
+                    result_next.To   = record.From;
                 }
                 if (result_next.From + binsize < record.From) {
                     return result;
                 }
                 // add contents of current record to the resulting record
                 result_next.AddRecord(record);
-                result_next.To = record.To;
                 // stop if current result record is full
                 if (result_next.To - result_next.From >= binsize) {
                     decoderIterator.Next();

@@ -39,14 +39,6 @@ public class BbiSummaryStatistics {
         SumSquares = 0.0;
     }
 
-    void AddRecord(BbiSummaryStatistics x) {
-        Valid      += x.Valid;
-        Min         = Math.min(Min, x.Min);
-        Max         = Math.max(Max, x.Max);
-        Sum        += x.Sum;
-        SumSquares += x.SumSquares;
-    }
-
     public double getMax() { return Max; }
 
     public double getMin() { return Min; }
