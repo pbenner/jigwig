@@ -74,7 +74,7 @@ class RTreeTraverser {
                         }
                     }
                 }
-                // push current position incremented by one leaf
+                // Push position incremented by one leaf
                 stack.push(new RTreeTraverserType(t.Vertex, i+1));
                 // found a match
                 if (t.Vertex.IsLeaf == 0) {

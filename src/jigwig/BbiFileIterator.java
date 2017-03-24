@@ -27,7 +27,7 @@ import java.nio.ByteBuffer;
 public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
 
     BbiFile file;
-    int idx;
+    int chromId;
     int from;
     int to;
     int binsize;
@@ -42,13 +42,13 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
 
     byte[] uncompressBuf;
 
-    BbiFileIterator(BbiFile file, int idx, int from, int to, int binsize) throws IOException {
+    BbiFileIterator(BbiFile file, int chromId, int from, int to, int binsize) throws IOException {
         if (binsize != 0) {
             from = DivInt.Down(from, binsize)*binsize;
             to   = DivInt.Up  (to,   binsize)*binsize;
         }
         this.file    = file;
-        this.idx     = idx;
+        this.chromId = chromId;
         this.from    = from;
         this.to      = to;
         this.binsize = binsize;
@@ -63,10 +63,10 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
             }
         }
         if (zoomIdx != -1) {
-            traverser = new RTreeTraverser(file.IndexZoom[zoomIdx], idx, from, to);
+            traverser = new RTreeTraverser(file.IndexZoom[zoomIdx], chromId, from, to);
             dataIsRaw = false;
         } else {
-            traverser = new RTreeTraverser(file.Index, idx, from, to);
+            traverser = new RTreeTraverser(file.Index, chromId, from, to);
             dataIsRaw = true;
         }
         result      = new BbiSummaryRecord();
@@ -132,7 +132,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
             }
             // loop over block
             for (record = decoderIterator.Get(); decoderIterator.Ok(); decoderIterator.Next()) {
-                if (record.ChromId != idx) {
+                if (record.ChromId != chromId) {
                     continue;
                 }
                 if (record.From < from || record.To > to) {
@@ -140,8 +140,9 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
                 }
                 // set `from' if this is the first record
                 if (result_next.Valid == 0) {
-                    result_next.From = record.From;
-                    result_next.To   = record.From;
+                    result_next.ChromId = record.ChromId;
+                    result_next.From    = record.From;
+                    result_next.To      = record.From;
                 }
                 if (result_next.From + binsize < record.From) {
                     return result;
