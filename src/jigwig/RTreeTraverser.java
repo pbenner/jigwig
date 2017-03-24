@@ -23,18 +23,18 @@ import java.util.Stack;
 
 class RTreeTraverser {
 
-    int  idx;
+    int  chromId;
     long from;
     long to;
     Stack<RTreeTraverserType> stack;
     RTreeTraverserType r;
 
-    RTreeTraverser(RTree tree, int idx, long from, long to) {
-        this.idx   = idx;
-        this.from  = from;
-        this.to    = to;
-        this.r     = new RTreeTraverserType();
-        this.stack = new Stack<RTreeTraverserType>();
+    RTreeTraverser(RTree tree, int chromId, long from, long to) {
+        this.chromId = chromId;
+        this.from    = from;
+        this.to      = to;
+        this.r       = new RTreeTraverserType();
+        this.stack   = new Stack<RTreeTraverserType>();
         this.stack.push(new RTreeTraverserType(tree.Root, 0));
         this.Next();
     }
@@ -57,21 +57,21 @@ class RTreeTraverser {
             L2: for (int i = t.Idx; i < t.Vertex.NChildren; i++) {
                 // indices are sorted, hence stop searching if idx is larger than the
                 // curent index end
-                if (t.Vertex.ChrIdxStart[i] > idx) {
+                if (t.Vertex.ChrIdxStart[i] > chromId) {
                     continue L1;
                 }
                 // check if this is the correct chromosome
-                if (idx >= t.Vertex.ChrIdxStart[i] && idx <= t.Vertex.ChrIdxEnd[i]) {
+                if (chromId >= t.Vertex.ChrIdxStart[i] && chromId <= t.Vertex.ChrIdxEnd[i]) {
                     if (t.Vertex.ChrIdxStart[i] == t.Vertex.ChrIdxEnd[i]) {
                         // check region on chromosome
                         if (t.Vertex.BaseEnd[i] <= from) {
                             // query region is still ahead
                             continue L2;
                         }
-                    }
-                    if (t.Vertex.BaseStart[i] >= to) {
-                        // already past the query region
-                        continue L1;
+                        if (t.Vertex.BaseStart[i] >= to) {
+                            // already past the query region
+                            continue L1;
+                        }
                     }
                 }
                 // push current position incremented by one leaf
