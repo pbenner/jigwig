@@ -142,6 +142,9 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
                 if (result_next.Valid == 0) {
                     result_next.From = record.From;
                 }
+                if (result_next.From + binsize < record.From) {
+                    return result;
+                }
                 // add contents of current record to the resulting record
                 result_next.AddRecord(record);
                 result_next.To = record.To;

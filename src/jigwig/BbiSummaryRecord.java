@@ -22,6 +22,13 @@ public class BbiSummaryRecord extends BbiSummaryStatistics {
     public long From;
     public long To;
 
+    void Reset() {
+        super.Reset();
+        ChromId = -1;
+        From    = 0;
+        To      = 0;
+    }
+
     /**
      * Getter for From attribute, performs overflow checks if form value exceeds Integer range
      * @return From
