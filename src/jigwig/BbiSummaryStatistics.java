@@ -54,4 +54,8 @@ public class BbiSummaryStatistics {
     public double getSum() { return Sum; }
 
     public double getMean() { return Sum/Valid; }
+
+    public double getVariance() {
+        return SumSquares/Valid - Sum/Valid*Sum/Valid;
+    }
 }

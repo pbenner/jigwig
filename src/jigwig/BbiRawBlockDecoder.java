@@ -61,33 +61,39 @@ class BbiRawBlockDecoder implements BbiBlockDecoder {
     }
 
     void readFixed(BbiBlockDecoderType r, long i) {
-        r.ChromId    = Header.ChromId;
-        r.From       = Header.Start + i*Header.Step;
-        r.To         = r.From + Header.Span;
-        r.Valid      = Header.Span;
-        r.Sum        = r.Valid*Buffer.getFloat();
-        r.SumSquares = r.Sum*r.Sum;
-        r.Min        = r.Sum;
-        r.Max        = r.Sum;
+        r.ChromId     = Header.ChromId;
+        r.From        = Header.Start + i*Header.Step;
+        r.To          = r.From + Header.Span;
+        r.Valid       = Header.Span;
+        r.Sum         = Buffer.getFloat();
+        r.SumSquares  = r.Sum*r.Sum;
+        r.Min         = r.Sum;
+        r.Max         = r.Sum;
+        r.Sum        *= r.Valid;
+        r.SumSquares *= r.Valid;
     }
     void readVariable(BbiBlockDecoderType r) {
-        r.ChromId    = Header.ChromId;
-        r.From       = Unsigned.getInt(Buffer);
-        r.To         = r.From + Header.Span;
-        r.Valid      = Header.Span;
-        r.Sum        = r.Valid*Buffer.getFloat();
-        r.SumSquares = r.Sum*r.Sum;
-        r.Min        = r.Sum;
-        r.Max        = r.Sum;
+        r.ChromId     = Header.ChromId;
+        r.From        = Unsigned.getInt(Buffer);
+        r.To          = r.From + Header.Span;
+        r.Valid       = Header.Span;
+        r.Sum         = Buffer.getFloat();
+        r.SumSquares  = r.Sum*r.Sum;
+        r.Min         = r.Sum;
+        r.Max         = r.Sum;
+        r.Sum        *= r.Valid;
+        r.SumSquares *= r.Valid;
     }
     void readBedGraph(BbiBlockDecoderType r) {
-        r.ChromId    = Header.ChromId;
-        r.From       = Unsigned.getInt(Buffer);
-        r.To         = Unsigned.getInt(Buffer);
-        r.Valid      = r.To-r.From;
-        r.Sum        = r.Valid*Buffer.getFloat();
-        r.SumSquares = r.Sum*r.Sum;
-        r.Min        = r.Sum;
-        r.Max        = r.Sum;
+        r.ChromId     = Header.ChromId;
+        r.From        = Unsigned.getInt(Buffer);
+        r.To          = Unsigned.getInt(Buffer);
+        r.Valid       = r.To-r.From;
+        r.Sum         = Buffer.getFloat();
+        r.SumSquares  = r.Sum*r.Sum;
+        r.Min         = r.Sum;
+        r.Max         = r.Sum;
+        r.Sum        *= r.Valid;
+        r.SumSquares *= r.Valid;
     }
 }
