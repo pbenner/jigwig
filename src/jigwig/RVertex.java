@@ -43,6 +43,9 @@ class RVertex {
 
     ByteBuffer ReadBlock(SeekableByteChannel channel, int i, byte[] uncompressBuf) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate((int)Sizes[i]);
+        // set channel position to data block offset
+        channel.position(DataOffset[i]);
+
         if (channel.read(buffer) != Sizes[i]) {
             throw new IOException("unexpected end of file");
         }

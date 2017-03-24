@@ -93,6 +93,19 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
         }
     }
 
+    void nextDecoderIterator() throws IOException {
+        RTreeTraverserType r = traverser.Get();
+        // read block
+        ByteBuffer buffer = r.Vertex.ReadBlock(file.Channel, r.Idx, uncompressBuf);
+        buffer.order(file.Header.byteOrder);
+        if (dataIsRaw) {
+            BbiRawBlockDecoder decoder = new BbiRawBlockDecoder(buffer);
+            decoderIterator = decoder.Decode();
+        } else {
+            BbiZoomBlockDecoder decoder = new BbiZoomBlockDecoder(buffer);
+            decoderIterator = decoder.Decode();
+        }
+    }
     BbiSummaryRecord next_() throws IOException {
         BbiSummaryRecord record;
         // calling next is invalid if result_next was already
@@ -111,19 +124,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
             // check if we need to get a new block
             if (decoderIterator == null || !decoderIterator.Ok()) {
                 if (traverser.Ok()) {
-                    RTreeTraverserType r = traverser.Get();
-                    // set channel position to data block offset
-                    file.Channel.position(r.Vertex.DataOffset[r.Idx]);
-                    // read block
-                    ByteBuffer buffer = r.Vertex.ReadBlock(file.Channel, r.Idx, uncompressBuf);
-                    buffer.order(file.Header.byteOrder);
-                    if (dataIsRaw) {
-                        BbiRawBlockDecoder decoder = new BbiRawBlockDecoder(buffer);
-                        decoderIterator = decoder.Decode();
-                    } else {
-                        BbiZoomBlockDecoder decoder = new BbiZoomBlockDecoder(buffer);
-                        decoderIterator = decoder.Decode();
-                    }
+                    nextDecoderIterator();
                     traverser.Next();
                 } else {
                     // no new block found, done
