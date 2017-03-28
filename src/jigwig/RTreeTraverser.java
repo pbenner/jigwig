@@ -60,6 +60,9 @@ class RTreeTraverser {
                 if (t.Vertex.ChrIdxStart[i] > chromId) {
                     continue L1;
                 }
+                if (t.Vertex.ChrIdxEnd[i] < chromId) {
+                    continue L2;
+                }
                 // check if this is the correct chromosome
                 if (chromId >= t.Vertex.ChrIdxStart[i] && chromId <= t.Vertex.ChrIdxEnd[i]) {
                     if (t.Vertex.ChrIdxStart[i] == t.Vertex.ChrIdxEnd[i]) {
