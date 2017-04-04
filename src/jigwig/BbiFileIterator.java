@@ -57,8 +57,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
         // index of a matching zoom level for the given binsize
         int zoomIdx = -1;
         for (int i = 0; i < file.Header.ZoomLevels; i++) {
-            if (binsize >= file.Header.ZoomHeaders[i].ReductionLevel &&
-                binsize %  file.Header.ZoomHeaders[i].ReductionLevel == 0) {
+            if (binsize >= file.Header.ZoomHeaders[i].ReductionLevel) {
                 zoomIdx = i;
             }
         }
