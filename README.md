@@ -6,7 +6,7 @@
   SeekableByteChannel rbc = Files.newByteChannel(path, EnumSet.of(StandardOpenOption.READ));
   BigWigFile bwf = new BigWigFile(rbc);
 
-  BigWigFileIterator it = bwf.query("chr11", 112643206, 112658727, 0);
+  BigWigFileIterator it = bwf.query("chr11|chr12", 112643206, 112658727, 0);
 
   while (it.hasNext()) {
     BigWigFileIteratorType r = it.next();
