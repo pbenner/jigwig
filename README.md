@@ -1,4 +1,6 @@
 
+Library for reading BigWig files (ported from [Gonetics](https://github.com/pbenner/gonetics)).
+
 ## Basic Usage
 
 ```java
