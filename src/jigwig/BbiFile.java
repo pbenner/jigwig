@@ -50,7 +50,7 @@ class BbiFile {
         Channel = channel;
     }
 
-    BbiFileIterator Query(int idx, int from, int to, int binsize) throws IOException {
+    BbiFileIterator query(int idx, int from, int to, int binsize) throws IOException {
         return new BbiFileIterator(this, idx, from, to, binsize);
     }
 

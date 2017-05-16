@@ -28,10 +28,10 @@ public class BbiSummaryStatistics {
     public double SumSquares;
 
     BbiSummaryStatistics() {
-        Reset();
+        reset();
     }
 
-    void Reset() {
+    void reset() {
         Valid      = 0.0;
         Min        =  Double.POSITIVE_INFINITY;
         Max        = -Double.POSITIVE_INFINITY;

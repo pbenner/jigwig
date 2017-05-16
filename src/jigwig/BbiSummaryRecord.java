@@ -22,14 +22,14 @@ public class BbiSummaryRecord extends BbiSummaryStatistics {
     public long From;
     public long To;
 
-    void Reset() {
-        super.Reset();
+    void reset() {
+        super.reset();
         ChromId = -1;
         From    = 0;
         To      = 0;
     }
 
-    void AddRecord(BbiSummaryRecord x) {
+    void addRecord(BbiSummaryRecord x) {
         if (To < x.From) {
             // fill gaps with zeros
             Valid += x.From - To;

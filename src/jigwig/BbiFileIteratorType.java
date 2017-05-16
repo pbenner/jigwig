@@ -31,7 +31,7 @@ public class BbiFileIteratorType {
         this.exception = exception;
     }
 
-    public BbiSummaryRecord GetSummary() throws IOException {
+    public BbiSummaryRecord getSummary() throws IOException {
         if (exception != null) {
             throw exception;
         }

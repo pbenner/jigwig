@@ -82,7 +82,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
         throw new UnsupportedOperationException();
     }
 
-    public BbiFileIteratorType next() {
+    public BbiFileIteratorType next() throws NoSuchElementException {
         try {
             return new BbiFileIteratorType(next_());
         }
@@ -105,7 +105,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
             decoderIterator = decoder.Decode();
         }
     }
-    BbiSummaryRecord next_() throws IOException {
+    BbiSummaryRecord next_() throws NoSuchElementException, IOException {
         BbiSummaryRecord record;
         // calling next is invalid if result_next was already
         // set to null by a previous call
@@ -117,7 +117,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
         result      = result_next;
         result_next = result_tmp;
         // reset result_next so it can carry the new result
-        result_next.Reset();
+        result_next.reset();
 
         while (true) {
             // check if we need to get a new block
@@ -148,7 +148,7 @@ public class BbiFileIterator implements Iterator<BbiFileIteratorType> {
                     return result;
                 }
                 // add contents of current record to the resulting record
-                result_next.AddRecord(record);
+                result_next.addRecord(record);
                 // stop if current result record is full
                 if (result_next.To - result_next.From >= binsize) {
                     decoderIterator.Next();
