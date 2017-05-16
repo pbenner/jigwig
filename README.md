@@ -13,7 +13,7 @@ Library for reading BigWig files (ported from [Gonetics](https://github.com/pben
   while (it.hasNext()) {
     BigWigFileIteratorType r = it.next();
     BigWigSummaryRecord s = r.getSummary();
-    System.out.printf("chrom: %d\n", s.getChromName());
+    System.out.printf("chrom: %s\n", s.getChromName());
     System.out.printf("from : %d\n", s.getFrom());
     System.out.printf("to   : %d\n", s.getTo());
     System.out.printf("value: %f\n", s.getMean());
