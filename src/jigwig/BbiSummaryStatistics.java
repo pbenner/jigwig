@@ -30,6 +30,13 @@ public class BbiSummaryStatistics {
     BbiSummaryStatistics() {
         reset();
     }
+    BbiSummaryStatistics(BbiSummaryStatistics r) {
+        this.Valid      = r.Valid;
+        this.Min        = r.Min;
+        this.Max        = r.Max;
+        this.Sum        = r.Sum;
+        this.SumSquares = r.SumSquares;
+    }
 
     void reset() {
         Valid      = 0.0;

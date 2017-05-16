@@ -18,9 +18,19 @@ package jigwig;
 
 public class BbiSummaryRecord extends BbiSummaryStatistics {
 
-    public long ChromId;
-    public long From;
-    public long To;
+    long ChromId;
+    long From;
+    long To;
+
+    BbiSummaryRecord() {
+    }
+
+    BbiSummaryRecord(BbiSummaryRecord r) {
+        super(r);
+        this.ChromId = r.ChromId;
+        this.From    = r.From;
+        this.To      = r.To;
+    }
 
     void reset() {
         super.reset();
@@ -68,4 +78,9 @@ public class BbiSummaryRecord extends BbiSummaryStatistics {
         return (int) To;
     }
 
+    public int getChromId() {
+        if(ChromId > Integer.MAX_VALUE) throw new AssertionError();
+        if(ChromId < Integer.MIN_VALUE) throw new AssertionError();
+        return (int)ChromId;
+    }
 }

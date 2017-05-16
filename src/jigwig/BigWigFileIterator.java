@@ -40,6 +40,10 @@ public class BigWigFileIterator implements Iterator<BigWigFileIteratorType> {
     BbiFileIterator it;
     BbiFileIterator it_next;
 
+    // current chromosome name
+    String chromName;
+    String chromName_next;
+
     BigWigFileIterator(BigWigFile file, String chromRegex, int from, int to, int binsize) throws IOException {
         this.file     = file;
         this.from     = from;
@@ -71,7 +75,8 @@ public class BigWigFileIterator implements Iterator<BigWigFileIteratorType> {
 
     public BigWigFileIteratorType next() throws NoSuchElementException {
         try {
-            return new BigWigFileIteratorType(next_());
+            BbiSummaryRecord summary = next_().getSummary();
+            return new BigWigFileIteratorType(summary, chromName);
         }
         catch (IOException e) {
             it_next = null;
@@ -80,9 +85,13 @@ public class BigWigFileIterator implements Iterator<BigWigFileIteratorType> {
     }
 
     void nextIterator() throws NoSuchElementException, IOException {
-        this.it = this.it_next;
+        this.it        = this.it_next;
+        this.chromName = this.chromName_next;
         if (!this.chromIds.isEmpty()) {
-            this.it_next = this.file.query(this.chromIds.remove(), this.from, this.to, this.binsize);
+            int chromId = this.chromIds.remove();
+            // set current chromosome name
+            chromName_next = file.genome.Seqnames[chromId];
+            this.it_next = this.file.query(chromId, this.from, this.to, this.binsize);
         }
     }
 

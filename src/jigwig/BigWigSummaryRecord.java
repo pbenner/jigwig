@@ -16,25 +16,16 @@
 
 package jigwig;
 
-import java.io.IOException;
+public class BigWigSummaryRecord extends BbiSummaryRecord {
 
-/* -------------------------------------------------------------------------- */
+    String ChromName;
 
-public class BigWigFileIteratorType {
-    BigWigSummaryRecord summary;
-    IOException exception;
-
-    BigWigFileIteratorType(BbiSummaryRecord summary, String chromName) {
-        this.summary = new BigWigSummaryRecord(summary, chromName);
-    }
-    BigWigFileIteratorType(IOException exception) {
-        this.exception = exception;
+    public BigWigSummaryRecord(BbiSummaryRecord summary, String name) {
+        super(summary);
+        this.ChromName = name;
     }
 
-    public BigWigSummaryRecord getSummary() throws IOException {
-        if (exception != null) {
-            throw exception;
-        }
-        return summary;
+    public String getChromName() {
+        return ChromName;
     }
 }
