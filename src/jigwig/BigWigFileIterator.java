@@ -58,11 +58,11 @@ public class BigWigFileIterator implements Iterator<BigWigFileIteratorType> {
             }
         }
         // initialize it_next
-        next_();
+        nextIterator();
     }
 
     public boolean hasNext() {
-        return (this.it != null && this.it.hasNext()) || it_next != null;
+        return (this.it != null && this.it.hasNext()) || (it_next != null && it_next.hasNext());
     }
 
     public void remove() {
@@ -89,6 +89,9 @@ public class BigWigFileIterator implements Iterator<BigWigFileIteratorType> {
     BbiFileIteratorType next_() throws NoSuchElementException, IOException {
         if (this.it == null || !this.it.hasNext()) {
             nextIterator();
+        }
+        if (this.it == null) {
+            throw new NoSuchElementException();
         }
         return this.it.next();
     }

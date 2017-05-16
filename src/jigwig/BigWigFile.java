@@ -49,11 +49,7 @@ public class BigWigFile extends BbiFile {
         genome = new Genome(seqnames, seqlength);
     }
 
-    public BbiFileIterator query(String seqname, int from, int to, int binsize) throws IOException {
-        int idx = genome.GetIdx(seqname);
-        if (idx == -1) {
-            throw new IOException("sequence not found");
-        }
-        return new BbiFileIterator(this, idx, from, to, binsize);
+    public BigWigFileIterator query(String seqname, int from, int to, int binsize) throws IOException {
+        return new BigWigFileIterator(this, seqname, from, to, binsize);
     }
 }
