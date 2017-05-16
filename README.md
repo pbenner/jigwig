@@ -10,7 +10,8 @@
 
   while (it.hasNext()) {
     BigWigFileIteratorType r = it.next();
-    BbiSummaryRecord s = r.getSummary();
+    BigWigSummaryRecord s = r.getSummary();
+    System.out.printf("chrom: %d\n", s.getChromName());
     System.out.printf("from : %d\n", s.getFrom());
     System.out.printf("to   : %d\n", s.getTo());
     System.out.printf("value: %f\n", s.getMean());
