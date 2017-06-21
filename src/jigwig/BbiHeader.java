@@ -38,10 +38,10 @@ class BbiHeader {
     long UncompressBufSize;
     long ExtensionOffset;
     long NBasesCovered;
-    long MinVal;
-    long MaxVal;
-    long SumData;
-    long SumSquared;
+    double MinVal;
+    double MaxVal;
+    double SumData;
+    double SumSquared;
     BbiHeaderZoom[] ZoomHeaders;
     long NBlocks;
     // offset positions
@@ -110,10 +110,10 @@ class BbiHeader {
             channel.read(buffer);
             buffer.rewind();
             NBasesCovered     = Unsigned.getLong(buffer);
-            MinVal            = Unsigned.getLong(buffer);
-            MaxVal            = Unsigned.getLong(buffer);
-            SumData           = Unsigned.getLong(buffer);
-            SumSquared        = Unsigned.getLong(buffer);
+            MinVal            = buffer.getDouble();
+            MaxVal            = buffer.getDouble();
+            SumData           = buffer.getDouble();
+            SumSquared        = buffer.getDouble();
         }
         // set pointers
         PtrCtOffset          = position + 1*64/8;
